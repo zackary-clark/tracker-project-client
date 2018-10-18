@@ -1,6 +1,8 @@
 'use strict'
 
 const authEvents = require('./auth/events')
+const maxEvents = require('./max/events')
+const common = require('./commonUI')
 
 // use require with a reference to bundle the file and use it in this file
 // const example = require('./example')
@@ -13,8 +15,9 @@ $(() => {
     $('#show-change-password').hide()
     $('#sign-up-form').hide()
     $('#sign-out-button').hide()
-    $('#new-game').hide()
+    common.hideNavItems()
     $('#current-user').hide()
+    $('.table-container').hide()
     $('.navbar-toggler').css('visibility', 'hidden')
 
     // add event handlers for user api use
@@ -23,4 +26,10 @@ $(() => {
     $('#sign-up-button').on('click', authEvents.onShowSignUp)
     $('#change-password').on('submit', authEvents.onChangePassword)
     $('#sign-out-button').on('click', authEvents.onSignOut)
+
+    // add event handlers for max
+    $('#new-max-form').on('submit', maxEvents.onNewMax)
+    $('#show-maxes-button').on('click', maxEvents.onShowMaxes)
+    $('.maxes-table').on('click', maxEvents.onShowEditMax)
+    $('#edit-max-form').on('submit', maxEvents.onEditMax)
 })

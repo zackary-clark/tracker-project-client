@@ -18,11 +18,16 @@
             <div class="collapse navbar-collapse" id="navbarList">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="new-game">New Game</a>
+                        <a class="nav-link" href="#" id="new-max" data-toggle="modal" data-target="#new-max-modal">Enter New Max</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="show-maxes-button">Show Maxes</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="current-user" data-toggle="dropdown">Placeholder User</a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#" id="sign-out-button">Sign Out</a>
                             <a class="dropdown-item" href="#" id="show-change-password" data-toggle="modal" data-target="#change-password-modal">Change Password</a>
                         </div>
@@ -30,7 +35,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="container-fluid">
+        <div class="container-fluid sign-in-up-container">
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 float-md-left">
                     <form id="sign-in-form">
@@ -84,6 +89,68 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="modal fade" id="new-max-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Max</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="new-max-form">
+                            <div class="form-group">
+                                <input required class="form-control" name="max[date]" type="datetime" placeholder="Date" />
+                                <input class="form-control" name="max[squat1RM]" type="text" placeholder="Squat 1RM" />
+                                <input class="form-control" name="max[bench1RM]" type="text" placeholder="Bench 1RM" />
+                                <input class="form-control" name="max[deadlift1RM]" type="text" placeholder="Deadlift 1RM" />
+                                <input class="form-control" name="max[press1RM]" type="text" placeholder="OHP 1RM" />
+                            </div>
+                            <input type="submit" class="btn btn-dark " value="Submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="edit-max-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Max</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-max-form">
+                            <div class="form-group">
+                                <input required class="form-control" name="max[date]" type="datetime" placeholder="Date" />
+                                <input class="form-control" name="max[squat1RM]" type="text" placeholder="Squat 1RM" />
+                                <input class="form-control" name="max[bench1RM]" type="text" placeholder="Bench 1RM" />
+                                <input class="form-control" name="max[deadlift1RM]" type="text" placeholder="Deadlift 1RM" />
+                                <input class="form-control" name="max[press1RM]" type="text" placeholder="OHP 1RM" />
+                            </div>
+                            <input type="submit" class="btn btn-dark " value="Submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-container container-fluid">
+            <table class="display-maxes table table-bordered table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Squat</th>
+                        <th scope="col">Bench</th>
+                        <th scope="col">Deadlift</th>
+                        <th scope="col">OHP</th>
+                    </tr>
+                    <tbody class="maxes-table"></tbody>
+                </thead>
+            </table>
         </div>
         <div class="display-message"></div>
     </body>
