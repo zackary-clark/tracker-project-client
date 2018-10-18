@@ -10,6 +10,81 @@
         <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
     </head>
     <body>
-        <h1>Browser Template</h1>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <span class="navbar-brand">Lift Tracker</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarList">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarList">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="new-game">New Game</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="current-user" data-toggle="dropdown">Placeholder User</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" id="sign-out-button">Sign Out</a>
+                            <a class="dropdown-item" href="#" id="show-change-password" data-toggle="modal" data-target="#change-password-modal">Change Password</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 float-md-left">
+                    <form id="sign-in-form">
+                        <div class="form-group">
+                            <label for="sign-in-email">Email address</label>
+                            <input required class="form-control" id="sign-in-email" name="credentials[email]" type="email" placeholder="Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="sign-in-pass">Password</label>
+                            <input required class="form-control" id="sign-in-pass" name="credentials[password]" type="password" placeholder="Enter Password" />
+                        </div>
+                        <input class="btn btn-dark" type="submit" value="Sign In" />
+                        <button type="button" class="btn btn-dark float-none" id="sign-up-button">Register</button>
+                    </form>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <form id="sign-up-form">
+                        <div class="form-group">
+                            <label for="sign-up-email">Email address</label>
+                            <input required class="form-control" id="sign-up-email" name="credentials[email]" type="email" placeholder="Enter Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="sign-up-password">Password</label>
+                            <input required class="form-control" id="sign-up-password" name="credentials[password]" type="password" placeholder="Enter Password" />
+                            <input required class="form-control" name="credentials[password_confirmation]" type="password" placeholder="Confirm Password" />
+                            <small id="confirm-password-help" class="form-text text-muted">Passwords must match!</small>
+                        </div>
+                        <input type="submit" class="btn btn-dark" value="Register" />
+                    </form>
+                </div>
+                <div class ="col-12 col-lg-4 col-xl-6"></div>
+            </div>
+        </div>
+        <div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Change Password</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="change-password">
+                            <div class="form-group">
+                                <input required class="form-control" name="passwords[old]" type="password" placeholder="Old Password" />
+                                <input required class="form-control" name="passwords[new]" type="password" placeholder="New Password" />
+                            </div>
+                            <input type="submit" class="btn btn-dark " value="Submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="display-message"></div>
     </body>
 </html>
