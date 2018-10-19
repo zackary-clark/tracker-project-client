@@ -8,24 +8,27 @@
 
         <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
         <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="assets/scripts/max/charts.js"></script>
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary">
             <span class="navbar-brand">Lift Tracker</span>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarList">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarList">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="new-max" data-toggle="modal" data-target="#new-max-modal">Enter New Max</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="show-maxes-button">Show Maxes</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="show-maxes-dropdown">One Rep Maxes</a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#" id="show-maxes-button">Table</a>
+                            <a class="dropdown-item" href="#" id="show-maxes-chart">Chart</a>
+                        </div>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="current-user" data-toggle="dropdown">Placeholder User</a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#" id="sign-out-button">Sign Out</a>
@@ -35,6 +38,7 @@
                 </ul>
             </div>
         </nav>
+        <div class="display-message">&nbsp;</div>
         <div class="container-fluid sign-in-up-container">
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 float-md-left">
@@ -47,8 +51,8 @@
                             <label for="sign-in-pass">Password</label>
                             <input required class="form-control" id="sign-in-pass" name="credentials[password]" type="password" placeholder="Enter Password" />
                         </div>
-                        <input class="btn btn-dark" type="submit" value="Sign In" />
-                        <button type="button" class="btn btn-dark float-none" id="sign-up-button">Register</button>
+                        <input class="btn btn-primary" type="submit" value="Sign In" />
+                        <button type="button" class="btn btn-primary float-none" id="sign-up-button">Register</button>
                     </form>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
@@ -63,7 +67,7 @@
                             <input required class="form-control" name="credentials[password_confirmation]" type="password" placeholder="Confirm Password" />
                             <small id="confirm-password-help" class="form-text text-muted">Passwords must match!</small>
                         </div>
-                        <input type="submit" class="btn btn-dark" value="Register" />
+                        <input type="submit" class="btn btn-primary" value="Register" />
                     </form>
                 </div>
                 <div class ="col-12 col-lg-4 col-xl-6"></div>
@@ -84,7 +88,7 @@
                                 <input required class="form-control" name="passwords[old]" type="password" placeholder="Old Password" />
                                 <input required class="form-control" name="passwords[new]" type="password" placeholder="New Password" />
                             </div>
-                            <input type="submit" class="btn btn-dark " value="Submit" />
+                            <input type="submit" class="btn btn-primary " value="Submit" />
                         </form>
                     </div>
                 </div>
@@ -101,15 +105,39 @@
                     </div>
                     <div class="modal-body">
                         <form id="new-max-form">
-                            <div class="form-group">
-                                <input required class="form-control" name="max[date]" type="datetime" placeholder="Date" />
-                                <input class="form-control" name="max[squat1RM]" type="text" placeholder="Squat 1RM" />
-                                <input class="form-control" name="max[bench1RM]" type="text" placeholder="Bench 1RM" />
-                                <input class="form-control" name="max[deadlift1RM]" type="text" placeholder="Deadlift 1RM" />
-                                <input class="form-control" name="max[press1RM]" type="text" placeholder="OHP 1RM" />
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-max-date">Date</label>
+                                    <input required class="form-control" id="new-max-date" name="max[date]" type="date" />
+                                </div>
                             </div>
-                            <input type="submit" class="btn btn-dark " value="Submit" />
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-max-squat">Squat 1RM</label>
+                                    <input class="form-control" name="max[squat1RM]" id="new-max-squat" type="number" step="0.1" placeholder="Squat 1RM" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="new-max-bench">Bench 1RM</label>
+                                    <input class="form-control" name="max[bench1RM]" id="new-max-bench" type="number" step="0.1" placeholder="Bench 1RM" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-max-deadlift">Deadlift 1RM</label>
+                                    <input class="form-control" name="max[deadlift1RM]" id="new-max-deadlift" type="number" step="0.1" placeholder="Deadlift 1RM" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="new-max-press">OHP 1RM</label>
+                                    <input class="form-control" name="max[press1RM]" id="new-max-press" type="number" step="0.1" placeholder="OHP 1RM" />
+                                </div>
+                            </div>
+                            <small id="new-max-help" class="form-text text-muted">Maxes must be numbers!</small>
+                            <input type="submit" class="btn btn-primary " value="Submit" />
                         </form>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="new-max-multiple-entry" value="">
+                            <label class="form-check-label" for="new-max-multiple-entry">Multiple Entries</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -125,21 +153,43 @@
                     </div>
                     <div class="modal-body">
                         <form id="edit-max-form">
-                            <div class="form-group">
-                                <input required class="form-control" name="max[date]" type="datetime" placeholder="Date" />
-                                <input class="form-control" name="max[squat1RM]" type="text" placeholder="Squat 1RM" />
-                                <input class="form-control" name="max[bench1RM]" type="text" placeholder="Bench 1RM" />
-                                <input class="form-control" name="max[deadlift1RM]" type="text" placeholder="Deadlift 1RM" />
-                                <input class="form-control" name="max[press1RM]" type="text" placeholder="OHP 1RM" />
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-max-date">Date</label>
+                                    <input required class="form-control" id="edit-max-date" name="max[date]" type="date" placeholder="Date" />
+                                </div>
                             </div>
-                            <input type="submit" class="btn btn-dark " value="Submit" />
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-max-squat">Squat 1RM</label>
+                                    <input class="form-control" id="edit-max-squat" name="max[squat1RM]" type="number" step="0.1" placeholder="Squat 1RM" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="edit-max-bench">Bench 1RM</label>
+                                    <input class="form-control" id="edit-max-bench" name="max[bench1RM]" type="number" step="0.1" placeholder="Bench 1RM" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-max-deadlift">Deadlift 1RM</label>
+                                    <input class="form-control" id="edit-max-deadlift" name="max[deadlift1RM]" type="number" step="0.1" placeholder="Deadlift 1RM" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="edit-max-press">OHP 1RM</label>
+                                    <input class="form-control" id="edit-max-press" name="max[press1RM]" type="number" step="0.1" placeholder="OHP 1RM" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Update" />
+                            <input type="button" class="btn btn-danger" id="delete-max-button" value="Delete" />
                         </form>
                     </div>
                 </div>
             </div>
         </div>
         <div class="table-container container-fluid">
-            <table class="display-maxes table table-bordered table-dark table-hover">
+            <button class="btn btn-primary" id="new-max">New Max</button>
+            <div>&nbsp;</div>
+            <table class="display-maxes table table-bordered table-light table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Date</th>
@@ -152,6 +202,8 @@
                 </thead>
             </table>
         </div>
-        <div class="display-message"></div>
+        <div class="container-fluid">
+            <div id="maxes-chart"></div>
+        </div>
     </body>
 </html>

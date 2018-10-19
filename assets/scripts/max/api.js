@@ -35,8 +35,19 @@ const editMax = function (id, data) {
     })
 }
 
+const deleteMax = function (id) {
+    return $.ajax({
+        url: config.apiUrl + `/maxes/${id}`,
+        headers: {
+            "Authorization": "Bearer " + store.user.token
+        },
+        method: 'DELETE'
+    })
+}
+
 module.exports = {
     newMax,
     showMaxes,
-    editMax
+    editMax,
+    deleteMax
 }

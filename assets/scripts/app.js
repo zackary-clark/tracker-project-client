@@ -18,6 +18,7 @@ $(() => {
     common.hideNavItems()
     $('#current-user').hide()
     $('.table-container').hide()
+    $('#maxes-chart').hide()
     $('.navbar-toggler').css('visibility', 'hidden')
 
     // add event handlers for user api use
@@ -32,4 +33,6 @@ $(() => {
     $('#show-maxes-button').on('click', maxEvents.onShowMaxes)
     $('.maxes-table').on('click', maxEvents.onShowEditMax)
     $('#edit-max-form').on('submit', maxEvents.onEditMax)
+    $('#delete-max-button').on('click', maxEvents.onDeleteMax)
+    $('#new-max').on('click', maxEvents.onShowNewMax)
 })

@@ -4,8 +4,9 @@ const store = require('../store.js')
 const common = require('../commonUI.js')
 
 const signUpSuccess = function(data) {
-    $('.display-message').html(`Successfully Registered!<br>Email: ${data.user.email}`)
+    $('.display-message').html(`Successfully Registered Email: ${data.user.email}`)
     $('.display-message').css('color', 'green')
+    common.fadeAndClearDisplayMessage()
     common.resetForms()
     $('#sign-up-form').hide()
     $('#sign-in-form').show()
@@ -13,7 +14,6 @@ const signUpSuccess = function(data) {
 }
 
 const signInSuccess = function(data) {
-    clearDisplayMessage()
     $('#current-user').show()
     $('#current-user').text(`${data.user.email}`)
     store.user = data.user
@@ -26,8 +26,9 @@ const signInSuccess = function(data) {
 }
 
 const changePasswordSuccess = function() {
-    $('.display-message').text('Successfully Changed Password!')
+    $('.display-message').html(`Successfully Changed Password for ${store.user.email}`)
     $('.display-message').css('color', 'green')
+    common.fadeAndClearDisplayMessage()
     common.resetForms()
     $('#change-password-modal').modal('hide')
 }
@@ -46,7 +47,6 @@ const showSignUp = function() {
 }
 
 const signOutSuccess = function() {
-    clearDisplayMessage()
     $('.sign-in-up-container').show()
     $('#sign-up-form').hide()
     $('#sign-in-form').show()
@@ -58,17 +58,15 @@ const signOutSuccess = function() {
     $('#current-user').hide()
     $('#sign-up-button').show()
     $('.table-container').hide()
+    $('#maxes-chart').hide()
     $('.navbar-toggler').css('visibility', 'hidden')
 }
 
 const failure = function() {
     $('.display-message').text('Authentication Request Failed!')
     $('.display-message').css('color', 'red')
+    common.fadeAndClearDisplayMessage()
     common.resetForms()
-}
-
-const clearDisplayMessage = function () {
-    $('.display-message').text('')
 }
 
 module.exports = {
@@ -78,6 +76,5 @@ module.exports = {
     changePasswordSuccess,
     signOutSuccess,
     showSignUp,
-    clearDisplayMessage,
     hideChangePassword
 }

@@ -22,16 +22,28 @@ const onShowMaxes = function(event) {
 
 const onShowEditMax = function (event) {
     event.preventDefault()
-    store.editMaxId = event.target.parentNode.id
+    store.editMaxId = parseInt(event.target.parentNode.id)
+    store.maxesLocation = store.maxes.findIndex(element => element.id === store.editMaxId)
     ui.showEditMax()
 }
 
-// TODO: add current data as current value in form
+const onShowNewMax = function (event) {
+    event.preventDefault()
+    ui.showNewMax()
+}
+
 const onEditMax = function(event) {
     event.preventDefault()
     const data = getFormFields(event.target)
-    api.editMax(parseInt(store.editMaxId), data)
+    api.editMax(store.editMaxId, data)
         .then(ui.editMaxSuccess)
+        .catch(ui.failure)
+}
+
+const onDeleteMax = function (event) {
+    event.preventDefault()
+    api.deleteMax(store.editMaxId)
+        .then(ui.deleteMaxSuccess)
         .catch(ui.failure)
 }
 
@@ -39,5 +51,7 @@ module.exports = {
     onNewMax,
     onShowMaxes,
     onEditMax,
-    onShowEditMax
+    onShowEditMax,
+    onDeleteMax,
+    onShowNewMax
 }

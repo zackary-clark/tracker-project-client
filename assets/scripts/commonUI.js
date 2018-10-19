@@ -9,17 +9,25 @@ const resetForms = function() {
 }
 
 const showNavItems = function() {
-    $('#new-max').show()
-    $('#show-maxes-button').show()
+    $('#show-maxes-dropdown').show()
 }
 
 const hideNavItems = function() {
-    $('#new-max').hide()
-    $('#show-maxes-button').hide()
+    $('#show-maxes-dropdown').hide()
+}
+
+const hideMaxTable = function() {
+    $('.table-container').hide()
+}
+
+const fadeAndClearDisplayMessage = function () {
+    setTimeout(() => $('.display-message').html('&nbsp;'), 2000)
 }
 
 module.exports = {
     resetForms,
     showNavItems,
-    hideNavItems
+    hideNavItems,
+    hideMaxTable,
+    fadeAndClearDisplayMessage
 }

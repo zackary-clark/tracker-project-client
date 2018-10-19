@@ -4,3 +4,5 @@ const store = {
 }
 
 module.exports = store
+
+// export store

@@ -5,10 +5,24 @@ const store = require('../store')
 
 const maxTableIdAddIn = "-maxes"
 
-const newMaxSuccess = function() {
+const showNewMax = function () {
+    $('#new-max-modal').modal('show')
+    $('#new-max-date').attr('value', parseDateForDefault(new Date()))
+}
+
+const newMaxSuccess = function(data) {
     $('.display-message').text('New Max Submit Success!')
     $('.display-message').css('color', 'green')
+    common.fadeAndClearDisplayMessage()
     common.resetForms()
+    $('#new-max-date').attr('value', parseDateForDefault(new Date()))
+    if (store.maxes) {
+        store.maxes.push(data.max)
+        redrawMaxTableAfterEdit()
+    }
+    // if checkbox is not checked, hide modal
+    console.log($('#new-max-multiple-entry').is(':checked'))
+    $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
 }
 
 const showMaxesSuccess = function(data) {
@@ -16,22 +30,33 @@ const showMaxesSuccess = function(data) {
     store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
     $('.maxes-table').html('')
     $('.table-container').show()
+    $('#maxes-chart').hide()
     store.maxes.forEach(populateMaxesTable)
 }
 
 const showEditMax = function () {
     $('#edit-max-modal').modal('show')
+    $('#edit-max-date').attr('value', store.maxes[store.maxesLocation].date.slice(0, 10))
+    $('#edit-max-squat').attr('value', store.maxes[store.maxesLocation].squat1RM)
+    $('#edit-max-bench').attr('value', store.maxes[store.maxesLocation].bench1RM)
+    $('#edit-max-deadlift').attr('value', store.maxes[store.maxesLocation].deadlift1RM)
+    $('#edit-max-press').attr('value', store.maxes[store.maxesLocation].press1RM)
 }
 
-const editMaxSuccess = function (data) {
-    store.maxes.sort((maxA, maxB) => maxA.id - maxB.id)
-    store.maxes[data.max.id - 1] = data.max
-    store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+const redrawMaxTableAfterEdit = function () {
     showMaxesSuccess(store)
     $('#edit-max-modal').modal('hide')
     common.resetForms()
-    $('.display-message').hide()
-    // $(`#${data.max.id}${maxTableIdAddIn}`).html(populateTableInnerHTML(data.max))
+}
+
+const editMaxSuccess = function (data) {
+    store.maxes[store.maxesLocation] = data.max
+    redrawMaxTableAfterEdit()
+}
+
+const deleteMaxSuccess = function () {
+    store.maxes.splice(store.maxesLocation, 1)
+    redrawMaxTableAfterEdit()
 }
 
 const populateMaxesTable = function (max) {
@@ -43,15 +68,14 @@ const populateMaxesTable = function (max) {
 }
 
 const populateTableInnerHTML = function (max) {
-    return `<td>${parseDate(max.date)}</td>
-    <td>${max.squat1RM ? max.squat1RM : 'None'}</td>
-    <td>${max.bench1RM ? max.bench1RM : 'None'}</td>
-    <td>${max.deadlift1RM ? max.deadlift1RM : 'None'}</td>
-    <td>${max.press1RM ? max.press1RM : 'None'}</td>`
+    return `<td>${parseDateForDisplay(max.date)}</td>
+    <td>${max.squat1RM ? max.squat1RM : ''}</td>
+    <td>${max.bench1RM ? max.bench1RM : ''}</td>
+    <td>${max.deadlift1RM ? max.deadlift1RM : ''}</td>
+    <td>${max.press1RM ? max.press1RM : ''}</td>`
 }
 
-const parseDate = function (date) {
-    // 2018-01-01T00:00:00.000Z
+const parseDateForDisplay = function (date) {
     const month = date.slice(5, 7)
     let monthString = ''
     switch (month) {
@@ -92,15 +116,64 @@ const parseDate = function (date) {
             monthString = 'Dec'
             break
         default:
-            monthString = "Something's gone horrible wrong. There are only 12 months."
+            monthString = "Something's gone horribly wrong. There are only 12 months."
     }
     return `${monthString} ${date.slice(8, 10)}, ${date.slice(0, 4)}`
+}
+
+const parseDateForDefault = function (dateObject) {
+    const date = dateObject.toDateString()
+    const monthString = date.slice(4, 7)
+    let month = '01'
+    switch (monthString) {
+        case 'Jan':
+            month = '01'
+            break
+        case 'Feb':
+            month = '02'
+            break
+        case 'Mar':
+            month = '03'
+            break
+        case 'Apr':
+            month = '04'
+            break
+        case 'May':
+            month = '05'
+            break
+        case 'Jun':
+            month = '06'
+            break
+        case 'Jul':
+            month = '07'
+            break
+        case 'Aug':
+            month = '08'
+            break
+        case 'Sep':
+            month = '09'
+            break
+        case 'Oct':
+            month = '10'
+            break
+        case 'Nov':
+            month = '11'
+            break
+        case 'Dec':
+            month = '12'
+            break
+        default:
+            month = "Something's gone horribly wrong. There are only 12 months."
+    }
+    let parsedDate = ''
+    parsedDate += date.slice(11, 15) + '-' + month + '-' + date.slice(8, 10)
+    return parsedDate
 }
 
 const failure = function() {
     $('.display-message').text('Max API Call Failed!')
     $('.display-message').css('color', 'red')
-    common.resetForms()
+    common.fadeAndClearDisplayMessage()
 }
 
 module.exports = {
@@ -108,5 +181,7 @@ module.exports = {
     failure,
     showMaxesSuccess,
     editMaxSuccess,
-    showEditMax
+    showEditMax,
+    deleteMaxSuccess,
+    showNewMax
 }
