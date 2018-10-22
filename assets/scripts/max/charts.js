@@ -5,12 +5,17 @@ google.charts.setOnLoadCallback(initialize)
 
 function initialize() {
     // draw chart on click
-    $('#show-maxes-chart').on('click', checkForData)
+    $('#show-maxes-chart').on('click', checkForExistingData)
+    $('#new-max-submit').on('click', noCheckForExistingData)
 }
 
-function checkForData() {
+function checkForExistingData() {
     // FIXME: use real async. For now, poor man's async (waiting 3 seconds to draw the chart) will work
     sessionStorage.getItem("maxes") ? drawMaxesChart() : setTimeout(() => drawMaxesChart(), 3000)
+}
+
+function noCheckForExistingData() {
+    setTimeout(() => drawMaxesChart(), 3000)
 }
 
 function drawMaxesChart() {
@@ -41,7 +46,8 @@ function drawMaxesChart() {
         vAxis: {
             title: 'Weight in Pounds'
         },
-        interpolateNulls: true
+        interpolateNulls: true,
+        focusTarget: 'category'
     }
 
     const chart = new google.visualization.LineChart(document.getElementById('maxes-chart'))

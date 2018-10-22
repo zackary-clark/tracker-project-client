@@ -5,7 +5,7 @@ const store = require('../store')
 
 const maxTableIdAddIn = "-maxes"
 
-// TODO: make entries editable from chart view, and make chart redraw upon new or edited entry
+// TODO: make entries editable from chart view
 
 const showNewMax = function () {
     $('#new-max-modal').modal('show')
@@ -19,10 +19,13 @@ const newMaxSuccess = function(data) {
     common.resetForms()
     $('#new-max-date').attr('value', parseDateForDefault(new Date()))
     // redraw table if the table is currently visible
-    if (store.maxes && $('.table-container').css("display") === "block") {
+    if (store.maxes) {
         store.maxes.push(data.max)
-        redrawMaxTableAfterEdit()
+        store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
         common.copyStoreToSessionStorage()
+    }
+    if ($('.table-container').css("display") === "block") {
+        redrawMaxTableAfterEdit()
     }
     $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
 }

@@ -29,7 +29,7 @@ const hideMaxItems = function() {
 }
 
 const fadeAndClearDisplayMessage = function () {
-    setTimeout(() => $('.display-message').html('&nbsp;'), 2000)
+    setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
 }
 
 const copyStoreToSessionStorage = function () {
