@@ -54,7 +54,11 @@ const showMaxesSuccess = function(data) {
     $('.table-container').show()
     $('.chart-container').hide()
     $('.max-container').show()
-    store.maxes.forEach(populateMaxesTable)
+    store.maxes.length > 0 ? store.maxes.forEach(populateMaxesTable) : drawEmptyTable()
+}
+
+const drawEmptyTable = function () {
+    $('.maxes-table').append('You have no 1RM entered yet!')
 }
 
 const showChartSuccess = function (data) {
