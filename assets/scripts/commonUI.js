@@ -1,7 +1,5 @@
 'use strict'
 
-const store = require('./store')
-
 const resetForms = function() {
     $('#sign-up-form').trigger('reset')
     $('#sign-in-form').trigger('reset')
@@ -15,15 +13,13 @@ const resetForms = function() {
 const showNavItems = function() {
     $('#show-maxes-dropdown').show()
     $('#show-bodyweights-dropdown').show()
+    $('#show-bodyweight-max-compare').show()
 }
 
 const hideNavItems = function() {
     $('#show-maxes-dropdown').hide()
     $('#show-bodyweights-dropdown').hide()
-}
-
-const hideMaxTable = function() {
-    $('.table-container').hide()
+    $('#show-bodyweight-max-compare').hide()
 }
 
 const hideMaxItems = function() {
@@ -46,7 +42,6 @@ module.exports = {
     resetForms,
     showNavItems,
     hideNavItems,
-    hideMaxTable,
     fadeAndClearDisplayMessage,
     hideMaxItems,
     hideBWItems

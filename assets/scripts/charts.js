@@ -19,7 +19,7 @@ function checkIfChartVisible() {
     }
 }
 
-// TODO: Use real async instead of setTimeout
+// TODO: Use real async instead of setTimeout. Make the AJAX call in this file instead of waiting for api.js.
 function noCheckForExistingMaxData() {
     $('.display-message').text('Loading...')
     setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
@@ -114,3 +114,5 @@ function drawBWsChart() {
 
     chart.draw(data, options)
 }
+
+// 

@@ -3,6 +3,7 @@
 const authEvents = require('./auth/events')
 const maxEvents = require('./max/events')
 const bodyweightEvents = require('./bodyweight/events')
+const compareEvents = require('./bodyweight-max-compare/events')
 const common = require('./commonUI')
 
 // use require with a reference to bundle the file and use it in this file
@@ -46,4 +47,7 @@ $(() => {
     $('#delete-bodyweight-button').on('click', bodyweightEvents.onDeleteBW)
     $('#new-bodyweight').on('click', bodyweightEvents.onShowNewBW)
     $('#show-bodyweights-chart').on('click', bodyweightEvents.onShowBWChart)
+
+    // add event handler for BW-1RM comparison
+    $('#show-bodyweight-max-compare').on('click', compareEvents.onShowCompareChart)
 })
