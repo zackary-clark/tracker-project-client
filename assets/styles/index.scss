@@ -10,12 +10,12 @@ body {
     color: #000000;
 }
 
-.chart-container {
+.chart-container, .bodyweight-chart-container {
     position: relative;
     width: 95%;
 }
 
-.chart-container:before {
+.chart-container:before, .bodyweight-chart-container:before {
     content: "";
     display: block;
     padding-top: 60%;

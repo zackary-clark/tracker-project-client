@@ -2,6 +2,7 @@
 
 const authEvents = require('./auth/events')
 const maxEvents = require('./max/events')
+const bodyweightEvents = require('./bodyweight/events')
 const common = require('./commonUI')
 
 // use require with a reference to bundle the file and use it in this file
@@ -18,6 +19,7 @@ $(() => {
     common.hideNavItems()
     $('#current-user').hide()
     common.hideMaxItems()
+    common.hideBWItems()
     $('.navbar-toggler').css('visibility', 'hidden')
 
     // add event handlers for user api use
@@ -35,4 +37,13 @@ $(() => {
     $('#delete-max-button').on('click', maxEvents.onDeleteMax)
     $('#new-max').on('click', maxEvents.onShowNewMax)
     $('#show-maxes-chart').on('click', maxEvents.onShowMaxChart)
+
+    // add event handlers for bodyweight
+    $('#new-bodyweight-form').on('submit', bodyweightEvents.onNewBW)
+    $('#show-bodyweights-button').on('click', bodyweightEvents.onShowBWs)
+    $('.bodyweights-table').on('click', bodyweightEvents.onShowEditBW)
+    $('#edit-bodyweight-form').on('submit', bodyweightEvents.onEditBW)
+    $('#delete-bodyweight-button').on('click', bodyweightEvents.onDeleteBW)
+    $('#new-bodyweight').on('click', bodyweightEvents.onShowNewBW)
+    $('#show-bodyweights-chart').on('click', bodyweightEvents.onShowBWChart)
 })

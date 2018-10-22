@@ -58,6 +58,7 @@ const signOutSuccess = function() {
     $('#current-user').hide()
     $('#sign-up-button').show()
     common.hideMaxItems()
+    common.hideBWItems()
     $('.navbar-toggler').css('visibility', 'hidden')
 }
 

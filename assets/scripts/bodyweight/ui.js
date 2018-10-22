@@ -3,115 +3,113 @@
 const common = require('../commonUI.js')
 const store = require('../store')
 
-const maxTableIdAddIn = "-maxes"
+const bodyweightTableIdAddIn = "-bodyweights"
+
+let tableHTML = ''
 
 // TODO: make entries editable from chart view
 
-const showNewMax = function () {
-    $('#new-max-modal').modal('show')
-    $('#new-max-date').attr('value', parseDateForDefault(new Date()))
+const showNewBW = function () {
+    $('#new-bodyweight-modal').modal('show')
+    $('#new-bodyweight-date').attr('value', parseDateForDefault(new Date()))
 }
 
-const newMaxSuccess = function(data) {
-    $('.display-message').text('New Max Submit Success!')
+const newBWSuccess = function(data) {
+    $('.display-message').text('New BW Submit Success!')
     $('.display-message').css('color', 'green')
     common.fadeAndClearDisplayMessage()
     common.resetForms()
-    $('#new-max-date').attr('value', parseDateForDefault(new Date()))
+    $('#new-bodyweight-date').attr('value', parseDateForDefault(new Date()))
     // redraw table if the table is currently visible
-    if (store.maxes) {
-        store.maxes.push(data.max)
-        store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+    if (store.bodyweights) {
+        store.bodyweights.push(data.bodyweight)
+        store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
         common.copyStoreToSessionStorage()
     }
-    if ($('.table-container').css("display") === "block") {
-        redrawMaxTableAfterEdit()
+    if ($('.bodyweight-table-container').css("display") === "block") {
+        redrawBWTableAfterEdit()
     }
-    $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
+    $('#new-bodyweight-multiple-entry').is(':checked') ? '' : $('#new-bodyweight-modal').modal('hide')
 }
 
-const newMaxDateMatch = function () {
+const newBWDateMatch = function () {
     $('.display-message').text('I told you not to use the same date twice!')
     $('.display-message').css('color', 'red')
-    $('#new-max-date').addClass('is-invalid')
-    setTimeout(() => $('#new-max-date').removeClass('is-invalid'), 3000)
+    $('#new-bodyweight-date').addClass('is-invalid')
+    setTimeout(() => $('#new-bodyweight-date').removeClass('is-invalid'), 3000)
     common.fadeAndClearDisplayMessage()
 }
 
 const newEditDateMatch = function () {
     $('.display-message').text('I told you not to use the same date twice!')
     $('.display-message').css('color', 'red')
-    $('#edit-max-date').addClass('is-invalid')
-    setTimeout(() => $('#edit-max-date').removeClass('is-invalid'), 3000)
+    $('#edit-bodyweight-date').addClass('is-invalid')
+    setTimeout(() => $('#edit-bodyweight-date').removeClass('is-invalid'), 3000)
     common.fadeAndClearDisplayMessage()
 }
 
-const showMaxesSuccess = function(data) {
-    store.maxes = data.maxes
-    store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+const showBWsSuccess = function(data) {
+    store.bodyweights = data.bodyweights
+    store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
     common.copyStoreToSessionStorage()
-    $('.maxes-table').html('')
-    $('.table-container').show()
-    $('.chart-container').hide()
-    $('.bodyweight-container').hide()
-    $('.max-container').show()
-    store.maxes.length > 0 ? store.maxes.forEach(populateMaxesTable) : drawEmptyTable()
+    $('.bodyweights-table').html('')
+    $('.bodyweight-table-container').show()
+    $('.bodyweight-chart-container').hide()
+    $('.max-container').hide()
+    $('.bodyweight-container').show()
+    store.bodyweights.length > 0 ? store.bodyweights.forEach(populateBWsTable) : drawEmptyTable()
 }
 
 const drawEmptyTable = function () {
-    $('.maxes-table').append('You have no 1RM entered yet!')
+    $('.bodyweights-table').append('You have no 1RM entered yet!')
 }
 
 const showChartSuccess = function (data) {
-    store.maxes = data.maxes
-    store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+    store.bodyweights = data.bodyweights
+    store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
     common.copyStoreToSessionStorage()
-    $('.bodyweight-container').hide()
-    $('.table-container').hide()
+    $('.max-container').hide()
+    $('.bodyweight-table-container').hide()
 }
 
-const showEditMax = function () {
-    $('#edit-max-modal').modal('show')
-    $('#edit-max-date').attr('value', store.maxes[store.maxesLocation].date.slice(0, 10))
-    $('#edit-max-squat').attr('value', store.maxes[store.maxesLocation].squat1RM)
-    $('#edit-max-bench').attr('value', store.maxes[store.maxesLocation].bench1RM)
-    $('#edit-max-deadlift').attr('value', store.maxes[store.maxesLocation].deadlift1RM)
-    $('#edit-max-press').attr('value', store.maxes[store.maxesLocation].press1RM)
+const showEditBW = function () {
+    $('#edit-bodyweight-modal').modal('show')
+    $('#edit-bodyweight-date').attr('value', store.bodyweights[store.bodyweightsLocation].date.slice(0, 10))
+    $('#edit-bodyweight-weight').attr('value', store.bodyweights[store.bodyweightsLocation].weight)
+    $('#edit-bodyweight-notes').attr('value', store.bodyweights[store.bodyweightsLocation].notes)
 }
 
-const redrawMaxTableAfterEdit = function () {
-    showMaxesSuccess(store)
-    $('#edit-max-modal').modal('hide')
+const redrawBWTableAfterEdit = function () {
+    showBWsSuccess(store)
+    $('#edit-bodyweight-modal').modal('hide')
     common.resetForms()
 }
 
-const editMaxSuccess = function (data) {
-    store.maxes[store.maxesLocation] = data.max
-    redrawMaxTableAfterEdit()
+const editBWSuccess = function (data) {
+    store.bodyweights[store.bodyweightsLocation] = data.bodyweight
+    redrawBWTableAfterEdit()
     common.copyStoreToSessionStorage()
 }
 
-const deleteMaxSuccess = function () {
-    store.maxes.splice(store.maxesLocation, 1)
-    redrawMaxTableAfterEdit()
+const deleteBWSuccess = function () {
+    store.bodyweights.splice(store.bodyweightsLocation, 1)
+    redrawBWTableAfterEdit()
     common.copyStoreToSessionStorage()
 }
 
-// FIXME: Use handlbars here to make this secure
-const populateMaxesTable = function (max) {
-    const maxesHTML = (`
-        <tr id="${max.id}${maxTableIdAddIn}">
-            ${populateTableInnerHTML(max)}
+const populateBWsTable = function (bodyweight) {
+    const bodyweightsHTML = (`
+        <tr id="${bodyweight.id}${bodyweightTableIdAddIn}">
+            ${populateTableInnerHTML(bodyweight)}
         </tr>`)
-    $('.maxes-table').append(maxesHTML)
+    tableHTML += bodyweightsHTML
 }
 
-const populateTableInnerHTML = function (max) {
-    return `<td>${parseDateForDisplay(max.date)}</td>
-    <td>${max.squat1RM ? max.squat1RM : ''}</td>
-    <td>${max.bench1RM ? max.bench1RM : ''}</td>
-    <td>${max.deadlift1RM ? max.deadlift1RM : ''}</td>
-    <td>${max.press1RM ? max.press1RM : ''}</td>`
+// FIXME: Don't use append for text! This is not at all secure! Use handlbars.
+const populateTableInnerHTML = function (bodyweight) {
+    return `<td>${parseDateForDisplay(bodyweight.date)}</td>
+    <td>${bodyweight.weight ? bodyweight.weight : ''}</td>
+    <td>${bodyweight.notes ? bodyweight.notes : ''}</td>`
 }
 
 const parseDateForDisplay = function (date) {
@@ -210,20 +208,20 @@ const parseDateForDefault = function (dateObject) {
 }
 
 const failure = function() {
-    $('.display-message').text('Max API Call Failed!')
+    $('.display-message').text('BW API Call Failed!')
     $('.display-message').css('color', 'red')
     common.fadeAndClearDisplayMessage()
 }
 
 module.exports = {
-    newMaxSuccess,
+    newBWSuccess,
     failure,
-    showMaxesSuccess,
-    editMaxSuccess,
-    showEditMax,
-    deleteMaxSuccess,
-    showNewMax,
+    showBWsSuccess,
+    editBWSuccess,
+    showEditBW,
+    deleteBWSuccess,
+    showNewBW,
     showChartSuccess,
-    newMaxDateMatch,
+    newBWDateMatch,
     newEditDateMatch
 }

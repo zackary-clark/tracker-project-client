@@ -9,7 +9,7 @@
         <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
         <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript" src="assets/scripts/max/charts.js"></script>
+        <script type="text/javascript" src="assets/scripts/charts.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark bg-primary">
@@ -24,6 +24,13 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#" id="show-maxes-button">Table</a>
                             <a class="dropdown-item" href="#" id="show-maxes-chart">Chart</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="show-bodyweights-dropdown">BW</a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#" id="show-bodyweights-button">Table</a>
+                            <a class="dropdown-item" href="#" id="show-bodyweights-chart">Chart</a>
                         </div>
                     </li>
                 </ul>
@@ -189,6 +196,82 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="new-bodyweight-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Body Weight</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="new-bodyweight-form">
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-bodyweight-date">Date</label>
+                                    <input required class="form-control" id="new-bodyweight-date" name="bodyweight[date]" type="date" />
+                                    <small id="new-bodyweight-date-help" class="form-text text-muted">Only one entry per date!</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-bodyweight-squat">Weight</label>
+                                    <input class="form-control" name="bodyweight[weight]" id="new-bodyweight-weight" type="number" step="0.1" placeholder="Weight" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-bodyweight-notes">Notes</label>
+                                    <input class="form-control" name="bodyweight[notes]" id="new-bodyweight-notes" type="text" placeholder="Notes" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" id="new-bodyweight-submit" value="Submit" />
+                        </form>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="new-bodyweight-multiple-entry" value="">
+                            <label class="form-check-label" for="new-bodyweight-multiple-entry">Multiple Entries</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="edit-bodyweight-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Body Weight</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-bodyweight-form">
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-bodyweight-date">Date</label>
+                                    <input required class="form-control" id="edit-bodyweight-date" name="bodyweight[date]" type="date" />
+                                    <small id="edit-bodyweight-date-help" class="form-text text-muted">Only one entry per date!</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-bodyweight-squat">Weight</label>
+                                    <input class="form-control" name="bodyweight[weight]" id="edit-bodyweight-weight" type="number" step="0.1" placeholder="Weight" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-bodyweight-notes">Notes</label>
+                                    <input class="form-control" name="bodyweight[notes]" id="edit-bodyweight-notes" type="text" placeholder="Notes" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" id="edit-bodyweight-submit" value="Submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="max-container container-fluid">
             <button class="btn btn-primary" id="new-max">New Max</button>
             <div>&nbsp;</div>
@@ -208,6 +291,25 @@
             </div>
             <div class="container-fluid chart-container">
                 <div class="chart" id="maxes-chart"></div>
+            </div>
+        </div>
+        <div class="bodyweight-container container-fluid">
+            <button class="btn btn-primary" id="new-bodyweight">New BW</button>
+            <div>&nbsp;</div>
+            <div class="bodyweight-table-container container-fluid">
+                <table class="display-bodyweights table table-bordered table-light table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Weight</th>
+                            <th scope="col">Notes</th>
+                        </tr>
+                        <tbody class="bodyweights-table"></tbody>
+                    </thead>
+                </table>
+            </div>
+            <div class="container-fluid bodyweight-chart-container">
+                <div class="chart" id="bodyweights-chart"></div>
             </div>
         </div>
     </body>
