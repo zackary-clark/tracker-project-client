@@ -109,6 +109,7 @@
                                 <div class="form-group col">
                                     <label for="new-max-date">Date</label>
                                     <input required class="form-control" id="new-max-date" name="max[date]" type="date" />
+                                    <small id="new-max-date-help" class="form-text text-muted">Only one entry per date!</small>
                                 </div>
                             </div>
                             <div class="row">
@@ -125,13 +126,13 @@
                                 <div class="form-group col">
                                     <label for="new-max-deadlift">Deadlift 1RM</label>
                                     <input class="form-control" name="max[deadlift1RM]" id="new-max-deadlift" type="number" step="0.1" placeholder="Deadlift 1RM" />
+                                    <small class="form-text text-muted">Maxes must be numbers!</small>
                                 </div>
                                 <div class="form-group col">
                                     <label for="new-max-press">OHP 1RM</label>
                                     <input class="form-control" name="max[press1RM]" id="new-max-press" type="number" step="0.1" placeholder="OHP 1RM" />
                                 </div>
                             </div>
-                            <small id="new-max-help" class="form-text text-muted">Maxes must be numbers!</small>
                             <input type="submit" class="btn btn-primary " value="Submit" />
                         </form>
                         <div class="form-check">
@@ -157,6 +158,7 @@
                                 <div class="form-group col">
                                     <label for="edit-max-date">Date</label>
                                     <input required class="form-control" id="edit-max-date" name="max[date]" type="date" placeholder="Date" />
+                                    <small id="edit-max-date-help" class="form-text text-muted">Only one entry per date!</small>
                                 </div>
                             </div>
                             <div class="row">
@@ -173,6 +175,7 @@
                                 <div class="form-group col">
                                     <label for="edit-max-deadlift">Deadlift 1RM</label>
                                     <input class="form-control" id="edit-max-deadlift" name="max[deadlift1RM]" type="number" step="0.1" placeholder="Deadlift 1RM" />
+                                    <small class="form-text text-muted">Maxes must be numbers!</small>
                                 </div>
                                 <div class="form-group col">
                                     <label for="edit-max-press">OHP 1RM</label>
@@ -186,24 +189,26 @@
                 </div>
             </div>
         </div>
-        <div class="table-container container-fluid">
+        <div class="max-container container-fluid">
             <button class="btn btn-primary" id="new-max">New Max</button>
             <div>&nbsp;</div>
-            <table class="display-maxes table table-bordered table-light table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Squat</th>
-                        <th scope="col">Bench</th>
-                        <th scope="col">Deadlift</th>
-                        <th scope="col">OHP</th>
-                    </tr>
-                    <tbody class="maxes-table"></tbody>
-                </thead>
-            </table>
-        </div>
-        <div class="container-fluid">
-            <div id="maxes-chart"></div>
+            <div class="table-container container-fluid">
+                <table class="display-maxes table table-bordered table-light table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Squat</th>
+                            <th scope="col">Bench</th>
+                            <th scope="col">Deadlift</th>
+                            <th scope="col">OHP</th>
+                        </tr>
+                        <tbody class="maxes-table"></tbody>
+                    </thead>
+                </table>
+            </div>
+            <div class="container-fluid chart-container">
+                <div class="chart" id="maxes-chart"></div>
+            </div>
         </div>
     </body>
 </html>

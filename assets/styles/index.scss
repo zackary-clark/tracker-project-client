@@ -9,3 +9,22 @@ body {
 .modal-content {
     color: #000000;
 }
+
+.chart-container {
+    position: relative;
+    width: 95%;
+}
+
+.chart-container:before {
+    content: "";
+    display: block;
+    padding-top: 60%;
+}
+
+.chart {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}

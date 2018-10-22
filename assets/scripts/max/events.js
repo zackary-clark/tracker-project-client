@@ -8,9 +8,13 @@ const store = require('../store.js')
 const onNewMax = function(event) {
     event.preventDefault()
     const data = getFormFields(event.target)
-    api.newMax(data)
-        .then(ui.newMaxSuccess)
-        .catch(ui.failure)
+    if (store.maxes.every(max => max.date.slice(0, 10) !== data.max.date)) {
+        api.newMax(data)
+            .then(ui.newMaxSuccess)
+            .catch(ui.failure)
+    } else {
+        ui.newMaxDateMatch()
+    }
 }
 
 const onShowMaxes = function(event) {
@@ -35,9 +39,13 @@ const onShowNewMax = function (event) {
 const onEditMax = function(event) {
     event.preventDefault()
     const data = getFormFields(event.target)
-    api.editMax(store.editMaxId, data)
-        .then(ui.editMaxSuccess)
-        .catch(ui.failure)
+    if (store.maxes.filter((max, index) => index !== store.maxesLocation).every(max => max.date.slice(0, 10) !== data.max.date)) {
+        api.editMax(store.editMaxId, data)
+            .then(ui.editMaxSuccess)
+            .catch(ui.failure)
+    } else {
+        ui.newEditDateMatch()
+    }
 }
 
 const onDeleteMax = function (event) {
@@ -47,11 +55,19 @@ const onDeleteMax = function (event) {
         .catch(ui.failure)
 }
 
+const onShowMaxChart = function (event) {
+    event.preventDefault()
+    api.showMaxes()
+        .then(ui.showChartSuccess)
+        .catch(ui.failure)
+}
+
 module.exports = {
     onNewMax,
     onShowMaxes,
     onEditMax,
     onShowEditMax,
     onDeleteMax,
-    onShowNewMax
+    onShowNewMax,
+    onShowMaxChart
 }

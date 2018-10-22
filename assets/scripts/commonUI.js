@@ -1,5 +1,7 @@
 'use strict'
 
+const store = require('./store')
+
 const resetForms = function() {
     $('#sign-up-form').trigger('reset')
     $('#sign-in-form').trigger('reset')
@@ -20,8 +22,19 @@ const hideMaxTable = function() {
     $('.table-container').hide()
 }
 
+const hideMaxItems = function() {
+    $('.table-container').hide()
+    $('.chart-container').hide()
+    $('.max-container').hide()
+}
+
 const fadeAndClearDisplayMessage = function () {
     setTimeout(() => $('.display-message').html('&nbsp;'), 2000)
+}
+
+const copyStoreToSessionStorage = function () {
+    sessionStorage.clear()
+    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
 }
 
 module.exports = {
@@ -29,5 +42,7 @@ module.exports = {
     showNavItems,
     hideNavItems,
     hideMaxTable,
-    fadeAndClearDisplayMessage
+    fadeAndClearDisplayMessage,
+    copyStoreToSessionStorage,
+    hideMaxItems
 }

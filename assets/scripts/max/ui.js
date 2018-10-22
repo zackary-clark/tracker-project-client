@@ -5,6 +5,8 @@ const store = require('../store')
 
 const maxTableIdAddIn = "-maxes"
 
+// TODO: make entries editable from chart view, and make chart redraw upon new or edited entry
+
 const showNewMax = function () {
     $('#new-max-modal').modal('show')
     $('#new-max-date').attr('value', parseDateForDefault(new Date()))
@@ -16,22 +18,46 @@ const newMaxSuccess = function(data) {
     common.fadeAndClearDisplayMessage()
     common.resetForms()
     $('#new-max-date').attr('value', parseDateForDefault(new Date()))
-    if (store.maxes) {
+    // redraw table if the table is currently visible
+    if (store.maxes && $('.table-container').css("display") === "block") {
         store.maxes.push(data.max)
         redrawMaxTableAfterEdit()
+        common.copyStoreToSessionStorage()
     }
-    // if checkbox is not checked, hide modal
-    console.log($('#new-max-multiple-entry').is(':checked'))
     $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
+}
+
+const newMaxDateMatch = function () {
+    $('.display-message').text('I told you not to use the same date twice!')
+    $('.display-message').css('color', 'red')
+    $('#new-max-date').addClass('is-invalid')
+    setTimeout(() => $('#new-max-date').removeClass('is-invalid'), 3000)
+    common.fadeAndClearDisplayMessage()
+}
+
+const newEditDateMatch = function () {
+    $('.display-message').text('I told you not to use the same date twice!')
+    $('.display-message').css('color', 'red')
+    $('#edit-max-date').addClass('is-invalid')
+    setTimeout(() => $('#edit-max-date').removeClass('is-invalid'), 3000)
+    common.fadeAndClearDisplayMessage()
 }
 
 const showMaxesSuccess = function(data) {
     store.maxes = data.maxes
     store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+    common.copyStoreToSessionStorage()
     $('.maxes-table').html('')
     $('.table-container').show()
-    $('#maxes-chart').hide()
+    $('.chart-container').hide()
+    $('.max-container').show()
     store.maxes.forEach(populateMaxesTable)
+}
+
+const showChartSuccess = function (data) {
+    store.maxes = data.maxes
+    store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+    common.copyStoreToSessionStorage()
 }
 
 const showEditMax = function () {
@@ -52,11 +78,13 @@ const redrawMaxTableAfterEdit = function () {
 const editMaxSuccess = function (data) {
     store.maxes[store.maxesLocation] = data.max
     redrawMaxTableAfterEdit()
+    common.copyStoreToSessionStorage()
 }
 
 const deleteMaxSuccess = function () {
     store.maxes.splice(store.maxesLocation, 1)
     redrawMaxTableAfterEdit()
+    common.copyStoreToSessionStorage()
 }
 
 const populateMaxesTable = function (max) {
@@ -183,5 +211,8 @@ module.exports = {
     editMaxSuccess,
     showEditMax,
     deleteMaxSuccess,
-    showNewMax
+    showNewMax,
+    showChartSuccess,
+    newMaxDateMatch,
+    newEditDateMatch
 }
