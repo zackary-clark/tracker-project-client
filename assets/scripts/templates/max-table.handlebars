@@ -1,0 +1,9 @@
+{{#each maxes as |max|}}
+    <tr id="{{max.id}}-maxes">
+        <td>{{parseDateForDisplay max.date}}</td>
+        <td>{{max.squat1RM}}</td>
+        <td>{{max.bench1RM}}</td>
+        <td>{{max.deadlift1RM}}</td>
+        <td>{{max.press1RM}}</td>
+    </tr>
+{{/each}}

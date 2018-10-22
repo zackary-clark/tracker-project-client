@@ -2,10 +2,7 @@
 
 const common = require('../commonUI.js')
 const store = require('../store')
-
-const bodyweightTableIdAddIn = "-bodyweights"
-
-let tableHTML = ''
+const showBWsTemplate = require('../templates/bodyweight-table.handlebars')
 
 // TODO: make entries editable from chart view
 
@@ -24,7 +21,7 @@ const newBWSuccess = function(data) {
     if (store.bodyweights) {
         store.bodyweights.push(data.bodyweight)
         store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
-        common.copyStoreToSessionStorage()
+        sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
     }
     if ($('.bodyweight-table-container').css("display") === "block") {
         redrawBWTableAfterEdit()
@@ -51,13 +48,15 @@ const newEditDateMatch = function () {
 const showBWsSuccess = function(data) {
     store.bodyweights = data.bodyweights
     store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
-    common.copyStoreToSessionStorage()
+    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
     $('.bodyweights-table').html('')
     $('.bodyweight-table-container').show()
     $('.bodyweight-chart-container').hide()
     $('.max-container').hide()
     $('.bodyweight-container').show()
-    store.bodyweights.length > 0 ? store.bodyweights.forEach(populateBWsTable) : drawEmptyTable()
+    let showBWsHtml = ''
+    store.bodyweights.length > 0 ? showBWsHtml = showBWsTemplate({ bodyweights: store.bodyweights }) : drawEmptyTable()
+    $('.bodyweights-table').append(showBWsHtml)
 }
 
 const drawEmptyTable = function () {
@@ -67,7 +66,7 @@ const drawEmptyTable = function () {
 const showChartSuccess = function (data) {
     store.bodyweights = data.bodyweights
     store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
-    common.copyStoreToSessionStorage()
+    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
     $('.max-container').hide()
     $('.bodyweight-table-container').hide()
 }
@@ -88,74 +87,13 @@ const redrawBWTableAfterEdit = function () {
 const editBWSuccess = function (data) {
     store.bodyweights[store.bodyweightsLocation] = data.bodyweight
     redrawBWTableAfterEdit()
-    common.copyStoreToSessionStorage()
+    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
 }
 
 const deleteBWSuccess = function () {
     store.bodyweights.splice(store.bodyweightsLocation, 1)
     redrawBWTableAfterEdit()
-    common.copyStoreToSessionStorage()
-}
-
-const populateBWsTable = function (bodyweight) {
-    const bodyweightsHTML = (`
-        <tr id="${bodyweight.id}${bodyweightTableIdAddIn}">
-            ${populateTableInnerHTML(bodyweight)}
-        </tr>`)
-    tableHTML += bodyweightsHTML
-}
-
-// FIXME: Don't use append for text! This is not at all secure! Use handlbars.
-const populateTableInnerHTML = function (bodyweight) {
-    return `<td>${parseDateForDisplay(bodyweight.date)}</td>
-    <td>${bodyweight.weight ? bodyweight.weight : ''}</td>
-    <td>${bodyweight.notes ? bodyweight.notes : ''}</td>`
-}
-
-const parseDateForDisplay = function (date) {
-    const month = date.slice(5, 7)
-    let monthString = ''
-    switch (month) {
-        case '01':
-            monthString = 'Jan'
-            break
-        case '02':
-            monthString = 'Feb'
-            break
-        case '03':
-            monthString = 'Mar'
-            break
-        case '04':
-            monthString = 'Apr'
-            break
-        case '05':
-            monthString = 'May'
-            break
-        case '06':
-            monthString = 'Jun'
-            break
-        case '07':
-            monthString = 'Jul'
-            break
-        case '08':
-            monthString = 'Aug'
-            break
-        case '09':
-            monthString = 'Sep'
-            break
-        case '10':
-            monthString = 'Oct'
-            break
-        case '11':
-            monthString = 'Nov'
-            break
-        case '12':
-            monthString = 'Dec'
-            break
-        default:
-            monthString = "Something's gone horribly wrong. There are only 12 months."
-    }
-    return `${monthString} ${date.slice(8, 10)}, ${date.slice(0, 4)}`
+    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
 }
 
 const parseDateForDefault = function (dateObject) {

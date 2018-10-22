@@ -42,19 +42,12 @@ const fadeAndClearDisplayMessage = function () {
     setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
 }
 
-// TODO: refactor this so that only the required data is cleared/copied each time
-const copyStoreToSessionStorage = function () {
-    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
-    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
-}
-
 module.exports = {
     resetForms,
     showNavItems,
     hideNavItems,
     hideMaxTable,
     fadeAndClearDisplayMessage,
-    copyStoreToSessionStorage,
     hideMaxItems,
     hideBWItems
 }

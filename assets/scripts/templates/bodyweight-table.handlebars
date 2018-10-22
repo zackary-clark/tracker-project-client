@@ -1,0 +1,7 @@
+{{#each bodyweights as |bodyweight|}}
+    <tr id="{{bodyweight.id}}-bodyweights">
+        <td>{{parseDateForDisplay bodyweight.date}}</td>
+        <td>{{bodyweight.weight}}</td>
+        <td>{{bodyweight.notes}}</td>
+    </tr>
+{{/each}}

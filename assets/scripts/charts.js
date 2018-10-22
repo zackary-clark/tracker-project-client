@@ -10,11 +10,20 @@ google.charts.setOnLoadCallback(initializeBW)
 function initializeMax() {
     // draw chart on click
     $('#show-maxes-chart').on('click', noCheckForExistingMaxData)
-    $('#new-max-submit').on('click', noCheckForExistingMaxData)
+    $('#new-max-submit').on('click', checkIfChartVisible)
 }
 
+function checkIfChartVisible() {
+    if ($('.chart-container').css("display") === "block") {
+        noCheckForExistingMaxData()
+    }
+}
+
+// TODO: Use real async instead of setTimeout
 function noCheckForExistingMaxData() {
-    setTimeout(() => drawMaxesChart(), 3000)
+    $('.display-message').text('Loading...')
+    setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
+    setTimeout(drawMaxesChart, 3000)
 }
 
 function drawMaxesChart() {
@@ -58,11 +67,19 @@ function drawMaxesChart() {
 function initializeBW() {
     // draw chart on click
     $('#show-bodyweights-chart').on('click', noCheckForExistingBWData)
-    $('#new-bodyweight-submit').on('click', noCheckForExistingBWData)
+    $('#new-bodyweight-submit').on('click', checkIfBWChartVisible)
+}
+
+function checkIfBWChartVisible() {
+    if ($('.bodyweight-chart-container').css("display") === "block") {
+        noCheckForExistingBWData()
+    }
 }
 
 function noCheckForExistingBWData() {
-    setTimeout(() => drawBWsChart(), 3000)
+    $('.display-message').text('Loading...')
+    setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
+    setTimeout(drawBWsChart, 3000)
 }
 
 function drawBWsChart() {

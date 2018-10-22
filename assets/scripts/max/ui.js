@@ -2,8 +2,7 @@
 
 const common = require('../commonUI.js')
 const store = require('../store')
-
-const maxTableIdAddIn = "-maxes"
+const showMaxesTemplate = require('../templates/max-table.handlebars')
 
 // TODO: make entries editable from chart view
 
@@ -22,7 +21,7 @@ const newMaxSuccess = function(data) {
     if (store.maxes) {
         store.maxes.push(data.max)
         store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
-        common.copyStoreToSessionStorage()
+        sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
     }
     if ($('.table-container').css("display") === "block") {
         redrawMaxTableAfterEdit()
@@ -49,13 +48,15 @@ const newEditDateMatch = function () {
 const showMaxesSuccess = function(data) {
     store.maxes = data.maxes
     store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
-    common.copyStoreToSessionStorage()
+    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
     $('.maxes-table').html('')
     $('.table-container').show()
     $('.chart-container').hide()
     $('.bodyweight-container').hide()
     $('.max-container').show()
-    store.maxes.length > 0 ? store.maxes.forEach(populateMaxesTable) : drawEmptyTable()
+    let showMaxesHtml = ''
+    store.maxes.length > 0 ? showMaxesHtml = showMaxesTemplate({ maxes: store.maxes }) : drawEmptyTable()
+    $('.maxes-table').append(showMaxesHtml)
 }
 
 const drawEmptyTable = function () {
@@ -65,7 +66,7 @@ const drawEmptyTable = function () {
 const showChartSuccess = function (data) {
     store.maxes = data.maxes
     store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
-    common.copyStoreToSessionStorage()
+    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
     $('.bodyweight-container').hide()
     $('.table-container').hide()
 }
@@ -88,76 +89,13 @@ const redrawMaxTableAfterEdit = function () {
 const editMaxSuccess = function (data) {
     store.maxes[store.maxesLocation] = data.max
     redrawMaxTableAfterEdit()
-    common.copyStoreToSessionStorage()
+    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
 }
 
 const deleteMaxSuccess = function () {
     store.maxes.splice(store.maxesLocation, 1)
     redrawMaxTableAfterEdit()
-    common.copyStoreToSessionStorage()
-}
-
-// FIXME: Use handlbars here to make this secure
-const populateMaxesTable = function (max) {
-    const maxesHTML = (`
-        <tr id="${max.id}${maxTableIdAddIn}">
-            ${populateTableInnerHTML(max)}
-        </tr>`)
-    $('.maxes-table').append(maxesHTML)
-}
-
-const populateTableInnerHTML = function (max) {
-    return `<td>${parseDateForDisplay(max.date)}</td>
-    <td>${max.squat1RM ? max.squat1RM : ''}</td>
-    <td>${max.bench1RM ? max.bench1RM : ''}</td>
-    <td>${max.deadlift1RM ? max.deadlift1RM : ''}</td>
-    <td>${max.press1RM ? max.press1RM : ''}</td>`
-}
-
-const parseDateForDisplay = function (date) {
-    const month = date.slice(5, 7)
-    let monthString = ''
-    switch (month) {
-        case '01':
-            monthString = 'Jan'
-            break
-        case '02':
-            monthString = 'Feb'
-            break
-        case '03':
-            monthString = 'Mar'
-            break
-        case '04':
-            monthString = 'Apr'
-            break
-        case '05':
-            monthString = 'May'
-            break
-        case '06':
-            monthString = 'Jun'
-            break
-        case '07':
-            monthString = 'Jul'
-            break
-        case '08':
-            monthString = 'Aug'
-            break
-        case '09':
-            monthString = 'Sep'
-            break
-        case '10':
-            monthString = 'Oct'
-            break
-        case '11':
-            monthString = 'Nov'
-            break
-        case '12':
-            monthString = 'Dec'
-            break
-        default:
-            monthString = "Something's gone horribly wrong. There are only 12 months."
-    }
-    return `${monthString} ${date.slice(8, 10)}, ${date.slice(0, 4)}`
+    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
 }
 
 const parseDateForDefault = function (dateObject) {
