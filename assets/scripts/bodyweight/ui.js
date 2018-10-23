@@ -54,6 +54,7 @@ const showBWsSuccess = function(data) {
     $('.bodyweight-chart-container').hide()
     $('.max-container').hide()
     $('.bodyweight-container').show()
+    $('.about-message').hide()
     let showBWsHtml = ''
     store.bodyweights.length > 0 ? showBWsHtml = showBWsTemplate({ bodyweights: store.bodyweights }) : drawEmptyTable()
     $('.bodyweights-table').append(showBWsHtml)

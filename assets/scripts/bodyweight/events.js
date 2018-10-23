@@ -28,19 +28,33 @@ const onShowEditBW = function (event) {
     event.preventDefault()
     store.editBWId = parseInt(event.target.parentNode.id)
     store.bodyweightsLocation = store.bodyweights.findIndex(element => element.id === store.editBWId)
-    ui.showEditBW()
+    if (store.editBWId) {
+        ui.showEditBW()
+    }
 }
 
 const onShowNewBW = function (event) {
     event.preventDefault()
     ui.showNewBW()
+
+    for (let i = 0; i < store.lines.length; i++) {
+        const data = {bodyweight: {
+            date: store.lines[i][0],
+            weight: store.lines[i][1],
+            notes: ''
+        }}
+        console.log(data)
+        api.newBW(data)
+            .then(ui.newBWSuccess)
+            .catch(ui.failure)
+    }
 }
 
 const onEditBW = function(event) {
     event.preventDefault()
     const data = getFormFields(event.target)
     if (store.bodyweights.filter((bodyweight, index) => index !== store.bodyweightsLocation).every(bodyweight => bodyweight.date.slice(0, 10) !== data.bodyweight.date)) {
-        api.editMax(store.editBWId, data)
+        api.editBW(store.editBWId, data)
             .then(ui.editBWSuccess)
             .catch(ui.failure)
     } else {

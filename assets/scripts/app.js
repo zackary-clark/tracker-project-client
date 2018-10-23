@@ -16,6 +16,7 @@ $(() => {
     $('#show-change-password').hide()
     $('#sign-up-form').hide()
     $('#sign-out-button').hide()
+    $('.about-message').hide()
     common.hideNavItems()
     $('#current-user').hide()
     common.hideMaxItems()

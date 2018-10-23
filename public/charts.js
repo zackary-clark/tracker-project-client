@@ -43,6 +43,7 @@ function onShowMaxChart() {
     $('.chart-container').show()
     $('.bodyweight-container').hide()
     $('.table-container').hide()
+    $('.about-message').hide()
 
     const maxPromise = Promise.resolve($.ajax({
         url: apiUrl + '/maxes',
@@ -92,8 +93,6 @@ function drawMaxesChart(values) {
 
 // BW Chart Functions
 
-// TODO: show notes on hover of data point
-
 function initializeBW() {
     // draw chart on click
     $('#show-bodyweights-chart').on('click', onShowBWChart)
@@ -116,6 +115,7 @@ function onShowBWChart() {
     $('.bodyweight-chart-container').show()
     $('.max-container').hide()
     $('.bodyweight-table-container').hide()
+    $('.about-message').hide()
 
     const bodyweightPromise = Promise.resolve($.ajax({
         url: apiUrl + '/bodyweights',
@@ -137,10 +137,20 @@ function drawBWsChart(values) {
     const data = new google.visualization.DataTable()
     data.addColumn('date', 'Date')
     data.addColumn('number', 'Weight')
+    data.addColumn({type: 'string', role: 'tooltip'})
 
     bodyweights.forEach(bodyweight => {
         const date = new Date(bodyweight.date)
-        data.addRow([new Date(date.getTime() - date.getTimezoneOffset() * -60000), bodyweight.weight])
+        const correctedDate = new Date(date.getTime() - date.getTimezoneOffset() * -60000)
+        const month = date.getUTCMonth() + 1
+        const day = date.getUTCDate()
+        const year = date.getUTCFullYear()
+        const showDate = month + "/" + day + "/" + year
+        const tooltipHTML = 
+            `${showDate}
+            Weight: ${bodyweight.weight}
+            ${bodyweight.notes}`
+        data.addRow([correctedDate, bodyweight.weight, tooltipHTML])
     })
 
     const options = {
@@ -152,7 +162,7 @@ function drawBWsChart(values) {
             title: 'Weight in Pounds'
         },
         interpolateNulls: true,
-        focusTarget: 'category'
+        tooltip: {isHtml: true}
     }
 
     const chart = new google.visualization.LineChart(document.getElementById('bodyweights-chart'))
@@ -172,6 +182,7 @@ function onShowCompareChart() {
     $('.display-message').css('color', 'black')
     $('.bodyweight-container').hide()
     $('.max-container').hide()
+    $('.about-message').hide()
     // cast ajax calls into JS Promises so we can use Promise.all
     const bodyweightPromise = Promise.resolve($.ajax({
         url: apiUrl + '/bodyweights',

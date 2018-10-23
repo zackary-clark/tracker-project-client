@@ -18,7 +18,35 @@ const onSignIn = function(event) {
     const data = getFormFields(event.target)
     api.signIn(data)
         .then(ui.signInSuccess)
+        .then(function() {
+            $.ajax({
+                type: "GET",
+                url: "../../../public/Measurement-Summary-2012-07-15-to-2018-10-23.csv",
+                dataType: "text",
+                success: function(data) {processData(data)}
+            })
+        })
         .catch(ui.failure)
+}
+
+function processData(allText) {
+    var allTextLines = allText.split(/\r\n|\n/)
+    var headers = allTextLines[0].split(',')
+    var lines = [];
+
+    for (var i=1; i<allTextLines.length; i++) {
+        var data = allTextLines[i].split(',')
+        if (data.length == headers.length) {
+
+            var tarr = []
+            for (var j=0; j<headers.length; j++) {
+                tarr.push(data[j])
+            }
+            lines.push(tarr)
+        }
+    }
+    store.lines = lines
+    console.log(lines)
 }
 
 const onShowChangePassword = function (event) {

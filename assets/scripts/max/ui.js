@@ -54,6 +54,7 @@ const showMaxesSuccess = function(data) {
     $('.chart-container').hide()
     $('.bodyweight-container').hide()
     $('.max-container').show()
+    $('.about-message').hide()
     let showMaxesHtml = ''
     store.maxes.length > 0 ? showMaxesHtml = showMaxesTemplate({ maxes: store.maxes }) : drawEmptyTable()
     $('.maxes-table').append(showMaxesHtml)
