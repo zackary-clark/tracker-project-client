@@ -3,7 +3,6 @@
 const authEvents = require('./auth/events')
 const maxEvents = require('./max/events')
 const bodyweightEvents = require('./bodyweight/events')
-const compareEvents = require('./bodyweight-max-compare/events')
 const common = require('./commonUI')
 
 // use require with a reference to bundle the file and use it in this file
