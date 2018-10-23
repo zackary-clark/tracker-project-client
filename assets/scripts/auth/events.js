@@ -21,7 +21,7 @@ const onSignIn = function(event) {
         .then(function() {
             $.ajax({
                 type: "GET",
-                url: "../../../public/Measurement-Summary-2012-07-15-to-2018-10-23.csv",
+                url: "public/Measurement-Summary-2012-07-15-to-2018-10-23.csv",
                 dataType: "text",
                 success: function(data) {processData(data)}
             })
