@@ -36,18 +36,6 @@ const onShowEditBW = function (event) {
 const onShowNewBW = function (event) {
     event.preventDefault()
     ui.showNewBW()
-
-    for (let i = 0; i < store.lines.length; i++) {
-        const data = {bodyweight: {
-            date: store.lines[i][0],
-            weight: store.lines[i][1],
-            notes: ''
-        }}
-        console.log(data)
-        api.newBW(data)
-            .then(ui.newBWSuccess)
-            .catch(ui.failure)
-    }
 }
 
 const onEditBW = function(event) {
