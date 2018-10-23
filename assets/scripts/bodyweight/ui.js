@@ -60,7 +60,7 @@ const showBWsSuccess = function(data) {
 }
 
 const drawEmptyTable = function () {
-    $('.bodyweights-table').append('You have no 1RM entered yet!')
+    $('.bodyweights-table').append('You have no Body Weight entered yet!')
 }
 
 const showEditBW = function () {
