@@ -24,7 +24,7 @@ if (window.location.hostname === 'localhost') {
 function initializeMax() {
     // draw chart on click
     $('#show-maxes-chart').on('click', onShowMaxChart)
-    $('#new-max-submit').on('click', checkIfChartVisible)
+    // $('#new-max-submit').on('click', checkIfChartVisible)
 }
 
 function checkIfChartVisible() {
@@ -97,7 +97,7 @@ function drawMaxesChart(values) {
 function initializeBW() {
     // draw chart on click
     $('#show-bodyweights-chart').on('click', onShowBWChart)
-    $('#new-bodyweight-submit').on('click', checkIfBWChartVisible)
+    // $('#new-bodyweight-submit').on('click', checkIfBWChartVisible)
 }
 
 function checkIfBWChartVisible() {
