@@ -55,19 +55,11 @@ const onDeleteMax = function (event) {
         .catch(ui.failure)
 }
 
-const onShowMaxChart = function (event) {
-    event.preventDefault()
-    api.showMaxes()
-        .then(ui.showChartSuccess)
-        .catch(ui.failure)
-}
-
 module.exports = {
     onNewMax,
     onShowMaxes,
     onEditMax,
     onShowEditMax,
     onDeleteMax,
-    onShowNewMax,
-    onShowMaxChart
+    onShowNewMax
 }

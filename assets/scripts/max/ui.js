@@ -63,14 +63,6 @@ const drawEmptyTable = function () {
     $('.maxes-table').append('You have no 1RM entered yet!')
 }
 
-const showChartSuccess = function (data) {
-    store.maxes = data.maxes
-    store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
-    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
-    $('.bodyweight-container').hide()
-    $('.table-container').hide()
-}
-
 const showEditMax = function () {
     $('#edit-max-modal').modal('show')
     $('#edit-max-date').attr('value', store.maxes[store.maxesLocation].date.slice(0, 10))
@@ -161,7 +153,6 @@ module.exports = {
     showEditMax,
     deleteMaxSuccess,
     showNewMax,
-    showChartSuccess,
     newMaxDateMatch,
     newEditDateMatch
 }

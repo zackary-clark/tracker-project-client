@@ -55,19 +55,11 @@ const onDeleteBW = function (event) {
         .catch(ui.failure)
 }
 
-const onShowBWChart = function (event) {
-    event.preventDefault()
-    api.showBWs()
-        .then(ui.showChartSuccess)
-        .catch(ui.failure)
-}
-
 module.exports = {
     onNewBW,
     onShowBWs,
     onEditBW,
     onShowEditBW,
     onDeleteBW,
-    onShowNewBW,
-    onShowBWChart
+    onShowNewBW
 }

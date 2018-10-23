@@ -23,32 +23,43 @@ if (window.location.hostname === 'localhost') {
 
 function initializeMax() {
     // draw chart on click
-    $('#show-maxes-chart').on('click', noCheckForExistingMaxData)
+    $('#show-maxes-chart').on('click', onShowMaxChart)
     $('#new-max-submit').on('click', checkIfChartVisible)
 }
 
 function checkIfChartVisible() {
+    event.preventDefault()
     if ($('.chart-container').css("display") === "block") {
-        noCheckForExistingMaxData()
+        setTimeout(onShowMaxChart, 50)
     }
 }
 
-// TODO: Use real async instead of setTimeout. Make the AJAX call in this file instead of waiting for api.js.
-
 // TODO: Add ability to only show last 12, 6, 1 month(s) in chart
-function noCheckForExistingMaxData() {
+function onShowMaxChart() {
+    event.preventDefault()
     $('.display-message').text('Loading...')
     $('.display-message').css('color', 'black')
-    setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
-    setTimeout(drawMaxesChart, 3000)
-}
-
-function drawMaxesChart() {
-
-    const maxes = JSON.parse(sessionStorage.getItem("maxes"))
-
     $('.max-container').show()
     $('.chart-container').show()
+    $('.bodyweight-container').hide()
+    $('.table-container').hide()
+
+    const maxPromise = Promise.resolve($.ajax({
+        url: apiUrl + '/maxes',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        },
+        method: 'GET'
+    }))
+
+    maxPromise.then(drawMaxesChart, failure)
+}
+
+function drawMaxesChart(values) {
+    $('.display-message').html('&nbsp;')
+
+    const maxes = values.maxes
+    maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
 
     const data = new google.visualization.DataTable()
     data.addColumn('date', 'Date')
@@ -81,31 +92,47 @@ function drawMaxesChart() {
 
 // BW Chart Functions
 
+// TODO: show notes on hover of data point
+
 function initializeBW() {
     // draw chart on click
-    $('#show-bodyweights-chart').on('click', noCheckForExistingBWData)
+    $('#show-bodyweights-chart').on('click', onShowBWChart)
     $('#new-bodyweight-submit').on('click', checkIfBWChartVisible)
 }
 
 function checkIfBWChartVisible() {
+    event.preventDefault()
     if ($('.bodyweight-chart-container').css("display") === "block") {
-        noCheckForExistingBWData()
+        // make sure the server recieves the POST before the GET
+        setTimeout(onShowBWChart, 50)
     }
 }
 
-function noCheckForExistingBWData() {
+function onShowBWChart() {
+    event.preventDefault()
     $('.display-message').text('Loading...')
     $('.display-message').css('color', 'black')
-    setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
-    setTimeout(drawBWsChart, 3000)
-}
-
-function drawBWsChart() {
-
-    const bodyweights = JSON.parse(sessionStorage.getItem("bodyweights"))
-
     $('.bodyweight-container').show()
     $('.bodyweight-chart-container').show()
+    $('.max-container').hide()
+    $('.bodyweight-table-container').hide()
+
+    const bodyweightPromise = Promise.resolve($.ajax({
+        url: apiUrl + '/bodyweights',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        },
+        method: 'GET'
+    }))
+
+    bodyweightPromise.then(drawBWsChart, failure)
+}
+
+function drawBWsChart(values) {
+    $('.display-message').html('&nbsp;')
+
+    const bodyweights = values.bodyweights
+    bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
 
     const data = new google.visualization.DataTable()
     data.addColumn('date', 'Date')

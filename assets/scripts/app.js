@@ -36,7 +36,6 @@ $(() => {
     $('#edit-max-form').on('submit', maxEvents.onEditMax)
     $('#delete-max-button').on('click', maxEvents.onDeleteMax)
     $('#new-max').on('click', maxEvents.onShowNewMax)
-    $('#show-maxes-chart').on('click', maxEvents.onShowMaxChart)
 
     // add event handlers for bodyweight
     $('#new-bodyweight-form').on('submit', bodyweightEvents.onNewBW)
@@ -45,5 +44,4 @@ $(() => {
     $('#edit-bodyweight-form').on('submit', bodyweightEvents.onEditBW)
     $('#delete-bodyweight-button').on('click', bodyweightEvents.onDeleteBW)
     $('#new-bodyweight').on('click', bodyweightEvents.onShowNewBW)
-    $('#show-bodyweights-chart').on('click', bodyweightEvents.onShowBWChart)
 })

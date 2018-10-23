@@ -21,7 +21,7 @@ const newBWSuccess = function(data) {
     if (store.bodyweights) {
         store.bodyweights.push(data.bodyweight)
         store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
-        sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
+        // sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
     }
     if ($('.bodyweight-table-container').css("display") === "block") {
         redrawBWTableAfterEdit()
@@ -48,7 +48,7 @@ const newEditDateMatch = function () {
 const showBWsSuccess = function(data) {
     store.bodyweights = data.bodyweights
     store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
-    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
+    // sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
     $('.bodyweights-table').html('')
     $('.bodyweight-table-container').show()
     $('.bodyweight-chart-container').hide()
@@ -61,14 +61,6 @@ const showBWsSuccess = function(data) {
 
 const drawEmptyTable = function () {
     $('.bodyweights-table').append('You have no 1RM entered yet!')
-}
-
-const showChartSuccess = function (data) {
-    store.bodyweights = data.bodyweights
-    store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
-    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
-    $('.max-container').hide()
-    $('.bodyweight-table-container').hide()
 }
 
 const showEditBW = function () {
@@ -87,13 +79,13 @@ const redrawBWTableAfterEdit = function () {
 const editBWSuccess = function (data) {
     store.bodyweights[store.bodyweightsLocation] = data.bodyweight
     redrawBWTableAfterEdit()
-    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
+    // sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
 }
 
 const deleteBWSuccess = function () {
     store.bodyweights.splice(store.bodyweightsLocation, 1)
     redrawBWTableAfterEdit()
-    sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
+    // sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
 }
 
 const parseDateForDefault = function (dateObject) {
@@ -159,7 +151,6 @@ module.exports = {
     showEditBW,
     deleteBWSuccess,
     showNewBW,
-    showChartSuccess,
     newBWDateMatch,
     newEditDateMatch
 }
