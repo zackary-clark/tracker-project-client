@@ -17,6 +17,7 @@ const signInSuccess = function(data) {
     $('#current-user').show()
     $('#current-user').text(`${data.user.email}`)
     store.user = data.user
+    sessionStorage.setItem("token", data.user.token)
     $('.sign-in-up-container').hide()
     $('#show-change-password').show()
     $('#sign-out-button').show()

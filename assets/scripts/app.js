@@ -47,7 +47,4 @@ $(() => {
     $('#delete-bodyweight-button').on('click', bodyweightEvents.onDeleteBW)
     $('#new-bodyweight').on('click', bodyweightEvents.onShowNewBW)
     $('#show-bodyweights-chart').on('click', bodyweightEvents.onShowBWChart)
-
-    // add event handler for BW-1RM comparison
-    $('#show-bodyweight-max-compare').on('click', compareEvents.onShowCompareChart)
 })

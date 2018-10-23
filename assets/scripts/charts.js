@@ -4,6 +4,20 @@ google.charts.load('current', {packages: ['corechart']})
 
 google.charts.setOnLoadCallback(initializeMax)
 google.charts.setOnLoadCallback(initializeBW)
+google.charts.setOnLoadCallback(initializeCompare)
+
+// We have to repeat the config file here, since we cannot require the file in a Google Charts file
+let apiUrl = ''
+const apiUrls = {
+    production: 'https://infinite-coast-74819.herokuapp.com',
+    development: 'http://localhost:4741'
+}
+
+if (window.location.hostname === 'localhost') {
+    apiUrl = apiUrls.development
+} else {
+    apiUrl = apiUrls.production
+}
 
 // Max Chart functions
 
@@ -20,8 +34,11 @@ function checkIfChartVisible() {
 }
 
 // TODO: Use real async instead of setTimeout. Make the AJAX call in this file instead of waiting for api.js.
+
+// TODO: Add ability to only show last 12, 6, 1 month(s) in chart
 function noCheckForExistingMaxData() {
     $('.display-message').text('Loading...')
+    $('.display-message').css('color', 'black')
     setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
     setTimeout(drawMaxesChart, 3000)
 }
@@ -78,6 +95,7 @@ function checkIfBWChartVisible() {
 
 function noCheckForExistingBWData() {
     $('.display-message').text('Loading...')
+    $('.display-message').css('color', 'black')
     setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
     setTimeout(drawBWsChart, 3000)
 }
@@ -115,4 +133,56 @@ function drawBWsChart() {
     chart.draw(data, options)
 }
 
-// 
+// Compare Chart Functions
+
+function initializeCompare() {
+    $('#show-bodyweight-max-compare').on('click', onShowCompareChart)
+}
+
+function onShowCompareChart() {
+    event.preventDefault()
+    $('.display-message').text('LOADING...')
+    $('.display-message').css('color', 'black')
+    $('.bodyweight-container').hide()
+    $('.max-container').hide()
+    // cast ajax calls into JS Promises so we can use Promise.all
+    const bodyweightPromise = Promise.resolve($.ajax({
+        url: apiUrl + '/bodyweights',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        },
+        method: 'GET'
+    }))
+
+    const maxPromise = Promise.resolve($.ajax({
+        url: apiUrl + '/maxes',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        },
+        method: 'GET'
+    }))
+
+    Promise.all([bodyweightPromise, maxPromise]).then(drawCompareChart, failure)
+}
+
+function drawCompareChart(values) {
+    $('.display-message').html('&nbsp;')
+    const bodyweights = values[0].bodyweights
+    const maxes = values[1].maxes
+    if (bodyweights.length >= 20 && maxes.length >= 20) {
+        $('.display-message').text("Turns out this requires even more math than expected... Come back soon for this feature!")
+        $('.display-message').css('color', 'black')
+        setTimeout(() => $('.display-message').html('&nbsp;'), 5000)
+        // TODO: Do interesting math to determine rate of change of 1RM vs BW
+    } else {
+        $('.display-message').text("You won't get anything useful from this feature with so little data!")
+        $('.display-message').css('color', 'black')
+        setTimeout(() => $('.display-message').html('&nbsp;'), 5000)
+    }
+}
+
+function failure() {
+    $('.display-message').text('API Call Failed!')
+    $('.display-message').css('color', 'red')
+    setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
+}

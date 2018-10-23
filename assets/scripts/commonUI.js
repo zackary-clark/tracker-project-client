@@ -36,6 +36,7 @@ const hideBWItems = function() {
 
 const fadeAndClearDisplayMessage = function () {
     setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
+    $('.display-message').css('color', 'black')
 }
 
 module.exports = {
