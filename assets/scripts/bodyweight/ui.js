@@ -30,22 +30,6 @@ const newBWSuccess = function(data) {
     $('#new-bodyweight-multiple-entry').is(':checked') ? '' : $('#new-bodyweight-modal').modal('hide')
 }
 
-const newBWDateMatch = function () {
-    $('.display-message').text('I told you not to use the same date twice!')
-    $('.display-message').css('color', 'red')
-    $('#new-bodyweight-date').addClass('is-invalid')
-    setTimeout(() => $('#new-bodyweight-date').removeClass('is-invalid'), 3000)
-    common.fadeAndClearDisplayMessage()
-}
-
-const newEditDateMatch = function () {
-    $('.display-message').text('I told you not to use the same date twice!')
-    $('.display-message').css('color', 'red')
-    $('#edit-bodyweight-date').addClass('is-invalid')
-    setTimeout(() => $('#edit-bodyweight-date').removeClass('is-invalid'), 3000)
-    common.fadeAndClearDisplayMessage()
-}
-
 const showBWsSuccess = function(data) {
     store.bodyweights = data.bodyweights
     store.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
@@ -154,7 +138,5 @@ module.exports = {
     editBWSuccess,
     showEditBW,
     deleteBWSuccess,
-    showNewBW,
-    newBWDateMatch,
-    newEditDateMatch
+    showNewBW
 }

@@ -30,22 +30,6 @@ const newMaxSuccess = function(data) {
     $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
 }
 
-const newMaxDateMatch = function () {
-    $('.display-message').text('I told you not to use the same date twice!')
-    $('.display-message').css('color', 'red')
-    $('#new-max-date').addClass('is-invalid')
-    setTimeout(() => $('#new-max-date').removeClass('is-invalid'), 3000)
-    common.fadeAndClearDisplayMessage()
-}
-
-const newEditDateMatch = function () {
-    $('.display-message').text('I told you not to use the same date twice!')
-    $('.display-message').css('color', 'red')
-    $('#edit-max-date').addClass('is-invalid')
-    setTimeout(() => $('#edit-max-date').removeClass('is-invalid'), 3000)
-    common.fadeAndClearDisplayMessage()
-}
-
 const showMaxesSuccess = function(data) {
     store.maxes = data.maxes
     store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
@@ -156,7 +140,5 @@ module.exports = {
     editMaxSuccess,
     showEditMax,
     deleteMaxSuccess,
-    showNewMax,
-    newMaxDateMatch,
-    newEditDateMatch
+    showNewMax
 }

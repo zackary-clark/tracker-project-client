@@ -1,6 +1,7 @@
 'use strict'
 
 const getFormFields = require('../../../lib/get-form-fields.js')
+const common = require('../commonUI')
 const api = require('./api.js')
 const ui = require('./ui.js')
 const store = require('../store.js')
@@ -13,7 +14,7 @@ const onNewMax = function(event) {
             .then(ui.newMaxSuccess)
             .catch(ui.failure)
     } else {
-        ui.newMaxDateMatch()
+        common.dateMatch()
     }
 }
 
@@ -44,7 +45,7 @@ const onEditMax = function(event) {
             .then(ui.editMaxSuccess)
             .catch(ui.failure)
     } else {
-        ui.newEditDateMatch()
+        common.dateMatch()
     }
 }
 

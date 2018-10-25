@@ -35,8 +35,11 @@ const hideBWItems = function() {
 }
 
 const fadeAndClearDisplayMessage = function () {
-    setTimeout(() => $('.display-message').html('&nbsp;'), 3000)
-    $('.display-message').css('color', 'black')
+    setTimeout(() => {
+            $('.display-message').html('&nbsp;')
+            $('.display-message').css('color', 'black')
+        }, 3000)
+    
 }
 
 const populateTableDropdown = function (records) {
@@ -48,6 +51,14 @@ const populateTableDropdown = function (records) {
     $('.interval-dropdown').html(intervalDropdownHTML)
 }
 
+const dateMatch = function (newOrEdit, whichTable) {
+    $('.display-message').text('I told you not to use the same date twice!')
+    $('.display-message').css('color', 'red')
+    $(`#${newOrEdit}-${whichTable}-date`).addClass('is-invalid')
+    setTimeout(() => $(`#${newOrEdit}-${whichTable}-date`).removeClass('is-invalid'), 3000)
+    fadeAndClearDisplayMessage()
+}
+
 module.exports = {
     resetForms,
     showNavItems,
@@ -55,5 +66,6 @@ module.exports = {
     fadeAndClearDisplayMessage,
     hideMaxItems,
     hideBWItems,
-    populateTableDropdown
+    populateTableDropdown,
+    dateMatch
 }

@@ -1,6 +1,7 @@
 'use strict'
 
 const getFormFields = require('../../../lib/get-form-fields.js')
+const common = require('../commonUI')
 const api = require('./api.js')
 const ui = require('./ui.js')
 const store = require('../store.js')
@@ -13,7 +14,7 @@ const onNewBW = function(event) {
             .then(ui.newBWSuccess)
             .catch(ui.failure)
     } else {
-        ui.newBWDateMatch()
+        common.dateMatch()
     }
 }
 
@@ -46,7 +47,7 @@ const onEditBW = function(event) {
             .then(ui.editBWSuccess)
             .catch(ui.failure)
     } else {
-        ui.newEditDateMatch()
+        common.dateMatch()
     }
 }
 
