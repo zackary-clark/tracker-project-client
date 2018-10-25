@@ -39,11 +39,21 @@ const fadeAndClearDisplayMessage = function () {
     $('.display-message').css('color', 'black')
 }
 
+const populateTableDropdown = function (records) {
+    $('.interval-dropdown-button').text('Page')
+    let intervalDropdownHTML = ''
+    for (let i = 1; i <= Math.ceil(records.length/10); i++) {
+        intervalDropdownHTML += `<a class="dropdown-item" href="#">${i}</a>\n`
+    }
+    $('.interval-dropdown').html(intervalDropdownHTML)
+}
+
 module.exports = {
     resetForms,
     showNavItems,
     hideNavItems,
     fadeAndClearDisplayMessage,
     hideMaxItems,
-    hideBWItems
+    hideBWItems,
+    populateTableDropdown
 }

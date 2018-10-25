@@ -21,10 +21,11 @@ const newMaxSuccess = function(data) {
     if (store.maxes) {
         store.maxes.push(data.max)
         store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
-        sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
+        // sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
     }
     if ($('.table-container').css("display") === "block") {
         redrawMaxTableAfterEdit()
+        common.populateTableDropdown(store.maxes)
     }
     $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
 }
@@ -48,13 +49,14 @@ const newEditDateMatch = function () {
 const showMaxesSuccess = function(data) {
     store.maxes = data.maxes
     store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
-    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
+    // sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
     $('.maxes-table').html('')
     $('.table-container').show()
     $('.chart-container').hide()
     $('.bodyweight-container').hide()
     $('.max-container').show()
     $('.about-message').hide()
+    common.populateTableDropdown(store.maxes)
     let showMaxesHtml = ''
     store.maxes.length > 0 ? showMaxesHtml = showMaxesTemplate({ maxes: store.maxes }) : drawEmptyTable()
     $('.maxes-table').append(showMaxesHtml)
@@ -82,13 +84,14 @@ const redrawMaxTableAfterEdit = function () {
 const editMaxSuccess = function (data) {
     store.maxes[store.maxesLocation] = data.max
     redrawMaxTableAfterEdit()
-    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
+    // sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
 }
 
 const deleteMaxSuccess = function () {
     store.maxes.splice(store.maxesLocation, 1)
     redrawMaxTableAfterEdit()
-    sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
+    common.populateTableDropdown(store.maxes)
+    // sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
 }
 
 const parseDateForDefault = function (dateObject) {

@@ -19,6 +19,15 @@ if (window.location.hostname === 'localhost') {
     apiUrl = apiUrls.production
 }
 
+const populateChartDropdown = function () {
+    $('.interval-dropdown-button').text('Chart Interval')
+    $('.interval-dropdown').html(`<a class="dropdown-item" href="#">1 Month</a>
+                                    <a class="dropdown-item" href="#">3 Months</a>
+                                    <a class="dropdown-item" href="#">6 Months</a>
+                                    <a class="dropdown-item" href="#">1 Year</a>
+                                    <a class="dropdown-item" href="#">All Time</a>`)
+}
+
 // Max Chart functions
 
 function initializeMax() {
@@ -44,6 +53,7 @@ function onShowMaxChart() {
     $('.bodyweight-container').hide()
     $('.table-container').hide()
     $('.about-message').hide()
+    populateChartDropdown()
 
     const maxPromise = Promise.resolve($.ajax({
         url: apiUrl + '/maxes',
@@ -116,6 +126,7 @@ function onShowBWChart() {
     $('.max-container').hide()
     $('.bodyweight-table-container').hide()
     $('.about-message').hide()
+    populateChartDropdown()
 
     const bodyweightPromise = Promise.resolve($.ajax({
         url: apiUrl + '/bodyweights',
