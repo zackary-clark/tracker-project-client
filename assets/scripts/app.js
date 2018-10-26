@@ -4,6 +4,7 @@ const authEvents = require('./auth/events')
 const maxEvents = require('./max/events')
 const bodyweightEvents = require('./bodyweight/events')
 const common = require('./commonUI')
+require('./charts')
 
 // use require with a reference to bundle the file and use it in this file
 // const example = require('./example')

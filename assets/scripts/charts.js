@@ -1,32 +1,13 @@
 'use strict'
 
-google.charts.load('current', {packages: ['corechart']})
+const config = require('./config')
+const common = require('./commonUI')
 
-google.charts.setOnLoadCallback(initializeMax)
-google.charts.setOnLoadCallback(initializeBW)
-google.charts.setOnLoadCallback(initializeCompare)
+import {GoogleCharts} from 'google-charts'
 
-// We have to repeat the config file here, since we cannot require the file in a Google Charts file
-let apiUrl = ''
-const apiUrls = {
-    production: 'https://infinite-coast-74819.herokuapp.com',
-    development: 'http://localhost:4741'
-}
-
-if (window.location.hostname === 'localhost') {
-    apiUrl = apiUrls.development
-} else {
-    apiUrl = apiUrls.production
-}
-
-const populateChartDropdown = function () {
-    $('.interval-dropdown-button').text('Chart Interval')
-    $('.interval-dropdown').html(`<a class="dropdown-item" href="#">1 Month</a>
-                                    <a class="dropdown-item" href="#">3 Months</a>
-                                    <a class="dropdown-item" href="#">6 Months</a>
-                                    <a class="dropdown-item" href="#">1 Year</a>
-                                    <a class="dropdown-item" href="#">All Time</a>`)
-}
+GoogleCharts.load(initializeMax)
+GoogleCharts.load(initializeBW)
+GoogleCharts.load(initializeCompare)
 
 // Max Chart functions
 
@@ -34,13 +15,6 @@ function initializeMax() {
     // draw chart on click
     $('#show-maxes-chart').on('click', onShowMaxChart)
     // $('#new-max-submit').on('click', checkIfChartVisible)
-}
-
-function checkIfChartVisible() {
-    event.preventDefault()
-    if ($('.chart-container').css("display") === "block") {
-        setTimeout(onShowMaxChart, 50)
-    }
 }
 
 // TODO: Add ability to only show last 12, 6, 1 month(s) in chart
@@ -53,10 +27,10 @@ function onShowMaxChart() {
     $('.bodyweight-container').hide()
     $('.table-container').hide()
     $('.about-message').hide()
-    populateChartDropdown()
+    common.populateChartDropdown()
 
     const maxPromise = Promise.resolve($.ajax({
-        url: apiUrl + '/maxes',
+        url: config.apiUrl + '/maxes',
         headers: {
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         },
@@ -72,7 +46,7 @@ function drawMaxesChart(values) {
     const maxes = values.maxes
     maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
 
-    const data = new google.visualization.DataTable()
+    const data = new GoogleCharts.api.visualization.DataTable()
     data.addColumn('date', 'Date')
     data.addColumn('number', 'Squat')
     data.addColumn('number', 'Bench')
@@ -96,7 +70,7 @@ function drawMaxesChart(values) {
         focusTarget: 'category'
     }
 
-    const chart = new google.visualization.LineChart(document.getElementById('maxes-chart'))
+    const chart = new GoogleCharts.api.visualization.LineChart(document.getElementById('maxes-chart'))
 
     chart.draw(data, options)
 }
@@ -109,14 +83,6 @@ function initializeBW() {
     // $('#new-bodyweight-submit').on('click', checkIfBWChartVisible)
 }
 
-function checkIfBWChartVisible() {
-    event.preventDefault()
-    if ($('.bodyweight-chart-container').css("display") === "block") {
-        // make sure the server recieves the POST before the GET
-        setTimeout(onShowBWChart, 50)
-    }
-}
-
 function onShowBWChart() {
     event.preventDefault()
     $('.display-message').text('Loading...')
@@ -126,10 +92,10 @@ function onShowBWChart() {
     $('.max-container').hide()
     $('.bodyweight-table-container').hide()
     $('.about-message').hide()
-    populateChartDropdown()
+    common.populateChartDropdown()
 
     const bodyweightPromise = Promise.resolve($.ajax({
-        url: apiUrl + '/bodyweights',
+        url: config.apiUrl + '/bodyweights',
         headers: {
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         },
@@ -145,7 +111,7 @@ function drawBWsChart(values) {
     const bodyweights = values.bodyweights
     bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
 
-    const data = new google.visualization.DataTable()
+    const data = new GoogleCharts.api.visualization.DataTable()
     data.addColumn('date', 'Date')
     data.addColumn('number', 'Weight')
     data.addColumn({type: 'string', role: 'tooltip'})
@@ -176,7 +142,7 @@ function drawBWsChart(values) {
         tooltip: {isHtml: true}
     }
 
-    const chart = new google.visualization.LineChart(document.getElementById('bodyweights-chart'))
+    const chart = new GoogleCharts.api.visualization.LineChart(document.getElementById('bodyweights-chart'))
 
     chart.draw(data, options)
 }
@@ -196,7 +162,7 @@ function onShowCompareChart() {
     $('.about-message').hide()
     // cast ajax calls into JS Promises so we can use Promise.all
     const bodyweightPromise = Promise.resolve($.ajax({
-        url: apiUrl + '/bodyweights',
+        url: config.apiUrl + '/bodyweights',
         headers: {
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         },
@@ -204,7 +170,7 @@ function onShowCompareChart() {
     }))
 
     const maxPromise = Promise.resolve($.ajax({
-        url: apiUrl + '/maxes',
+        url: config.apiUrl + '/maxes',
         headers: {
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         },

@@ -59,6 +59,16 @@ const dateMatch = function (newOrEdit, whichTable) {
     fadeAndClearDisplayMessage()
 }
 
+const populateChartDropdown = function () {
+    $('.interval-dropdown-button').text('Chart Interval')
+    $('.interval-dropdown').html(`<a class="dropdown-item" href="#">1 Month</a>
+                                    <a class="dropdown-item" href="#">3 Months</a>
+                                    <a class="dropdown-item" href="#">6 Months</a>
+                                    <a class="dropdown-item" href="#">1 Year</a>
+                                    <a class="dropdown-item" href="#">All Time</a>`)
+}
+
+
 module.exports = {
     resetForms,
     showNavItems,
@@ -67,5 +77,6 @@ module.exports = {
     hideMaxItems,
     hideBWItems,
     populateTableDropdown,
-    dateMatch
+    dateMatch,
+    populateChartDropdown
 }
