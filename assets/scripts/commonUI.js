@@ -59,13 +59,13 @@ const dateMatch = function (newOrEdit, whichTable) {
     fadeAndClearDisplayMessage()
 }
 
-const populateChartDropdown = function () {
+const populateChartDropdown = function (chartID) {
     $('.interval-dropdown-button').text('Chart Interval')
-    $('.interval-dropdown').html(`<a class="dropdown-item" href="#">1 Month</a>
-                                    <a class="dropdown-item" href="#">3 Months</a>
-                                    <a class="dropdown-item" href="#">6 Months</a>
-                                    <a class="dropdown-item" href="#">1 Year</a>
-                                    <a class="dropdown-item" href="#">All Time</a>`)
+    $('.interval-dropdown').html(`<a class="dropdown-item ${chartID}-dropdown-item" href="#" id="${chartID}-1month">1 Month</a>
+                                    <a class="dropdown-item ${chartID}-dropdown-item" href="#" id="${chartID}-3month">3 Months</a>
+                                    <a class="dropdown-item ${chartID}-dropdown-item" href="#" id="${chartID}-6month">6 Months</a>
+                                    <a class="dropdown-item ${chartID}-dropdown-item" href="#" id="${chartID}-1year">1 Year</a>
+                                    <a class="dropdown-item ${chartID}-dropdown-item" href="#" id="${chartID}-alltime">All Time</a>`)
 }
 
 

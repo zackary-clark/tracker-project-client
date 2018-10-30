@@ -3,6 +3,9 @@
 const config = require('./config')
 const common = require('./commonUI')
 const store = require('./store')
+const Moment = require('moment')
+const MomentRange = require('moment-range')
+const moment = MomentRange.extendMoment(Moment)
 
 import {GoogleCharts} from 'google-charts'
 
@@ -14,13 +17,31 @@ GoogleCharts.load(initializeCompare)
 
 function initializeMax() {
     // draw chart on click
-    $('#show-maxes-chart').on('click', onShowMaxChart)
-    // $('#new-max-submit').on('click', checkIfChartVisible)
+    $('#show-maxes-chart').on('click', getAndDrawMaxes)
+    $('.interval-dropdown').on('click', '.max-dropdown-item', maxChooseInterval)
 }
 
-// TODO: Add ability to only show last 12, 6, 1 month(s) in chart
-function onShowMaxChart() {
+function maxChooseInterval(event) {
     event.preventDefault()
+    if (event.target.id === 'max-alltime') {
+        onShowMaxChart(0)
+    }
+    if (event.target.id === 'max-1year') {
+        onShowMaxChart(12)
+    }
+    if (event.target.id === 'max-1month') {
+        onShowMaxChart(1)
+        console.log(event.target.id)
+    }
+    if (event.target.id === 'max-3month') {
+        onShowMaxChart(3)
+    }
+    if (event.target.id === 'max-6month') {
+        onShowMaxChart(6)
+    }
+}
+
+function maxShowAndHide() {
     $('.display-message').text('Loading...')
     $('.display-message').css('color', 'black')
     $('.max-container').show()
@@ -28,8 +49,12 @@ function onShowMaxChart() {
     $('.bodyweight-container').hide()
     $('.table-container').hide()
     $('.about-message').hide()
-    common.populateChartDropdown()
+}
 
+function getAndDrawMaxes(event) {
+    event.preventDefault()
+    maxShowAndHide()
+    common.populateChartDropdown('max')
     const maxPromise = Promise.resolve($.ajax({
         url: config.apiUrl + '/maxes',
         headers: {
@@ -38,14 +63,36 @@ function onShowMaxChart() {
         method: 'GET'
     }))
 
-    maxPromise.then(drawMaxesChart, failure)
+    maxPromise
+        .then(drawMaxesChart)
+        .then(values => {
+            store.maxes = values.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+        })
+        .catch(failure)
+}
+
+function onShowMaxChart(interval) {
+    maxShowAndHide()
+    common.populateChartDropdown('max')
+    // because drawMaxesChart is expecting an object with 'maxes' key
+    const values = {}
+    // default interval is all-time
+    values.maxes = store.maxes
+    // if we have an interval other than all-time, we filter for the last 'interval' months of data
+    if (interval > 0) {
+        values.maxes = store.maxes.filter(max => {
+            const date = moment(max.date)
+            const range = moment.rangeFromInterval('month', -interval, new Date())
+            return date.within(range)
+        })
+    }
+    drawMaxesChart(values)
 }
 
 function drawMaxesChart(values) {
     $('.display-message').html('&nbsp;')
 
-    const maxes = values.maxes
-    maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+    const maxes = values.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
 
     const data = new GoogleCharts.api.visualization.DataTable()
     data.addColumn('date', 'Date')
@@ -74,18 +121,39 @@ function drawMaxesChart(values) {
     const chart = new GoogleCharts.api.visualization.LineChart(document.getElementById('maxes-chart'))
 
     chart.draw(data, options)
+
+    return values
 }
 
 // BW Chart Functions
 
 function initializeBW() {
     // draw chart on click
-    $('#show-bodyweights-chart').on('click', onShowBWChart)
-    // $('#new-bodyweight-submit').on('click', checkIfBWChartVisible)
+    $('#show-bodyweights-chart').on('click', getAndDrawBWs)
+    $('.interval-dropdown').on('click', '.bodyweight-dropdown-item', bodyweightChooseInterval)
 }
 
-function onShowBWChart() {
+function bodyweightChooseInterval(event) {
     event.preventDefault()
+    if (event.target.id === 'bodyweight-alltime') {
+        onShowBWChart(0)
+    }
+    if (event.target.id === 'bodyweight-1year') {
+        onShowBWChart(12)
+    }
+    if (event.target.id === 'bodyweight-1month') {
+        onShowBWChart(1)
+        console.log(event.target.id)
+    }
+    if (event.target.id === 'bodyweight-3month') {
+        onShowBWChart(3)
+    }
+    if (event.target.id === 'bodyweight-6month') {
+        onShowBWChart(6)
+    }
+}
+
+function bodyweightShowAndHide() {
     $('.display-message').text('Loading...')
     $('.display-message').css('color', 'black')
     $('.bodyweight-container').show()
@@ -93,8 +161,12 @@ function onShowBWChart() {
     $('.max-container').hide()
     $('.bodyweight-table-container').hide()
     $('.about-message').hide()
-    common.populateChartDropdown()
+}
 
+function getAndDrawBWs(event) {
+    event.preventDefault()
+    bodyweightShowAndHide()
+    common.populateChartDropdown('bodyweight')
     const bodyweightPromise = Promise.resolve($.ajax({
         url: config.apiUrl + '/bodyweights',
         headers: {
@@ -103,14 +175,33 @@ function onShowBWChart() {
         method: 'GET'
     }))
 
-    bodyweightPromise.then(drawBWsChart, failure)
+    bodyweightPromise
+        .then(drawBWsChart)
+        .then(values => {
+            store.bodyweights = values.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
+        })
+        .catch(failure)
+}
+
+function onShowBWChart(interval) {
+    bodyweightShowAndHide()
+    common.populateChartDropdown('bodyweight')
+    const values = {}
+    values.bodyweights = store.bodyweights
+    if (interval > 0) {
+        values.bodyweights = store.bodyweights.filter(bodyweight => {
+            const date = moment(bodyweight.date)
+            const range = moment.rangeFromInterval('month', -interval, new Date())
+            return date.within(range)
+        })
+    }
+    drawBWsChart(values)
 }
 
 function drawBWsChart(values) {
     $('.display-message').html('&nbsp;')
 
-    const bodyweights = values.bodyweights
-    bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
+    const bodyweights = values.bodyweights.sort((bodyweightA, bodyweightB) => new Date(bodyweightA.date) - new Date(bodyweightB.date))
 
     const data = new GoogleCharts.api.visualization.DataTable()
     data.addColumn('date', 'Date')
@@ -146,6 +237,8 @@ function drawBWsChart(values) {
     const chart = new GoogleCharts.api.visualization.LineChart(document.getElementById('bodyweights-chart'))
 
     chart.draw(data, options)
+
+    return values
 }
 
 // Compare Chart Functions

@@ -46,4 +46,6 @@ $(() => {
     $('#edit-bodyweight-form').on('submit', bodyweightEvents.onEditBW)
     $('#delete-bodyweight-button').on('click', bodyweightEvents.onDeleteBW)
     $('#new-bodyweight').on('click', bodyweightEvents.onShowNewBW)
+
+    // TODO: add page selection to table views
 })
