@@ -2,6 +2,7 @@
 
 const config = require('./config')
 const common = require('./commonUI')
+const store = require('./store')
 
 import {GoogleCharts} from 'google-charts'
 
@@ -32,7 +33,7 @@ function onShowMaxChart() {
     const maxPromise = Promise.resolve($.ajax({
         url: config.apiUrl + '/maxes',
         headers: {
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + store.user.token
         },
         method: 'GET'
     }))
@@ -97,7 +98,7 @@ function onShowBWChart() {
     const bodyweightPromise = Promise.resolve($.ajax({
         url: config.apiUrl + '/bodyweights',
         headers: {
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + store.user.token
         },
         method: 'GET'
     }))
@@ -164,7 +165,7 @@ function onShowCompareChart() {
     const bodyweightPromise = Promise.resolve($.ajax({
         url: config.apiUrl + '/bodyweights',
         headers: {
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + store.user.token
         },
         method: 'GET'
     }))
@@ -172,7 +173,7 @@ function onShowCompareChart() {
     const maxPromise = Promise.resolve($.ajax({
         url: config.apiUrl + '/maxes',
         headers: {
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + store.user.token
         },
         method: 'GET'
     }))
