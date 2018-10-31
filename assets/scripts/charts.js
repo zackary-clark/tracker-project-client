@@ -17,8 +17,6 @@ GoogleCharts.load(initializeMax)
 GoogleCharts.load(initializeBW)
 GoogleCharts.load(initializeCompare)
 
-// TODO: make entries editable from chart view
-
 // Max Chart functions
 
 function initializeMax() {
