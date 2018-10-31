@@ -25,7 +25,7 @@ const newMaxSuccess = function(data) {
     }
     if ($('.table-container').css("display") === "block") {
         redrawMaxTableAfterEdit()
-        common.populateTableDropdown(store.maxes)
+        // common.populateTableDropdown(store.maxes)
     }
     $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
 }
@@ -40,7 +40,8 @@ const showMaxesSuccess = function(data) {
     $('.bodyweight-container').hide()
     $('.max-container').show()
     $('.about-message').hide()
-    common.populateTableDropdown(store.maxes)
+    $('.max-dropdown').hide()
+    // common.populateTableDropdown(store.maxes)
     let showMaxesHtml = ''
     store.maxes.length > 0 ? showMaxesHtml = showMaxesTemplate({ maxes: store.maxes }) : drawEmptyTable()
     $('.maxes-table').append(showMaxesHtml)
@@ -74,7 +75,7 @@ const editMaxSuccess = function (data) {
 const deleteMaxSuccess = function () {
     store.maxes.splice(store.maxesLocation, 1)
     redrawMaxTableAfterEdit()
-    common.populateTableDropdown(store.maxes)
+    // common.populateTableDropdown(store.maxes)
     // sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
 }
 

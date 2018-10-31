@@ -47,5 +47,5 @@ $(() => {
     $('#delete-bodyweight-button').on('click', bodyweightEvents.onDeleteBW)
     $('#new-bodyweight').on('click', bodyweightEvents.onShowNewBW)
 
-    // TODO: add page selection to table views
+    // TODO: remove page dropdown from table views
 })

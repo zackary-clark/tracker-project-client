@@ -25,7 +25,7 @@ const newBWSuccess = function(data) {
     }
     if ($('.bodyweight-table-container').css("display") === "block") {
         redrawBWTableAfterEdit()
-        common.populateTableDropdown(store.bodyweights)
+        // common.populateTableDropdown(store.bodyweights)
     }
     $('#new-bodyweight-multiple-entry').is(':checked') ? '' : $('#new-bodyweight-modal').modal('hide')
 }
@@ -40,7 +40,8 @@ const showBWsSuccess = function(data) {
     $('.max-container').hide()
     $('.bodyweight-container').show()
     $('.about-message').hide()
-    common.populateTableDropdown(store.bodyweights)
+    $('.bodyweight-dropdown').hide()
+    // common.populateTableDropdown(store.bodyweights)
     let showBWsHtml = ''
     store.bodyweights.length > 0 ? showBWsHtml = showBWsTemplate({ bodyweights: store.bodyweights }) : drawEmptyTable()
     $('.bodyweights-table').append(showBWsHtml)
@@ -72,7 +73,7 @@ const editBWSuccess = function (data) {
 const deleteBWSuccess = function () {
     store.bodyweights.splice(store.bodyweightsLocation, 1)
     redrawBWTableAfterEdit()
-    common.populateTableDropdown(store.bodyweights)
+    // common.populateTableDropdown(store.bodyweights)
     // sessionStorage.setItem("bodyweights", JSON.stringify(store.bodyweights))
 }
 
