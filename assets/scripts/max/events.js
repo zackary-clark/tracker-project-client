@@ -21,6 +21,10 @@ const onNewMax = function(event) {
 const onShowMaxes = function(event) {
     event.preventDefault()
     api.showMaxes()
+        .then(data => {
+            store.maxes = data.maxes
+            store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+        })
         .then(ui.showMaxesSuccess)
         .catch(ui.failure)
 }

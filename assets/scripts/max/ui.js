@@ -30,9 +30,7 @@ const newMaxSuccess = function(data) {
     $('#new-max-multiple-entry').is(':checked') ? '' : $('#new-max-modal').modal('hide')
 }
 
-const showMaxesSuccess = function(data) {
-    store.maxes = data.maxes
-    store.maxes.sort((maxA, maxB) => new Date(maxA.date) - new Date(maxB.date))
+const showMaxesSuccess = function() {
     // sessionStorage.setItem("maxes", JSON.stringify(store.maxes))
     $('.maxes-table').html('')
     $('.table-container').show()
@@ -40,14 +38,26 @@ const showMaxesSuccess = function(data) {
     $('.bodyweight-container').hide()
     $('.max-container').show()
     $('.about-message').hide()
-    common.populateTableDropdown(store.maxes)
+    $('.max-dropdown').hide()
+    if (store.maxes.length > 0) {
+        $('.max-dropdown').show()
+        common.populateTableDropdown(store.maxes)
+        showPage(1)
+    } else {
+        drawEmptyTable()
+    }
+}
+
+const showPage = function (page) {
     let showMaxesHtml = ''
-    store.maxes.length > 0 ? showMaxesHtml = showMaxesTemplate({ maxes: store.maxes }) : drawEmptyTable()
+    store.currentPage = store.maxes.slice((page-1)*10, (page-1)*10+10)
+    $('.maxes-table').html('')
+    showMaxesHtml = showMaxesTemplate({ maxes: store.currentPage })
     $('.maxes-table').append(showMaxesHtml)
 }
 
 const drawEmptyTable = function () {
-    $('.maxes-table').append('You have no 1RM entered yet!')
+    $('.maxes-table').html('You have no 1RM entered yet!')
 }
 
 const showEditMax = function () {

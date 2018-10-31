@@ -26,12 +26,14 @@ const hideMaxItems = function() {
     $('.table-container').hide()
     $('.chart-container').hide()
     $('.max-container').hide()
+    $('.max-dropdown').hide()
 }
 
 const hideBWItems = function() {
     $('.bodyweight-container').hide()
     $('.bodyweight-table-container').hide()
     $('.bodyweight-chart-container').hide()
+    $('.bodyweight-dropdown').hide()
 }
 
 const fadeAndClearDisplayMessage = function () {
@@ -60,6 +62,7 @@ const dateMatch = function (newOrEdit, whichTable) {
 }
 
 const populateChartDropdown = function (chartID) {
+    $(`.${chartID}-dropdown`).show()
     $('.interval-dropdown-button').text('Chart Interval')
     $('.interval-dropdown').html(`<a class="dropdown-item ${chartID}-dropdown-item" href="#" id="${chartID}-1month">1 Month</a>
                                     <a class="dropdown-item ${chartID}-dropdown-item" href="#" id="${chartID}-3month">3 Months</a>
