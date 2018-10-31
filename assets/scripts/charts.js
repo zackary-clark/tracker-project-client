@@ -3,15 +3,21 @@
 const config = require('./config')
 const common = require('./commonUI')
 const store = require('./store')
+
 const Moment = require('moment')
 const MomentRange = require('moment-range')
 const moment = MomentRange.extendMoment(Moment)
+
+const maxUI = require('./max/ui')
+const bodyweightUI = require('./bodyweight/ui')
 
 import {GoogleCharts} from 'google-charts'
 
 GoogleCharts.load(initializeMax)
 GoogleCharts.load(initializeBW)
 GoogleCharts.load(initializeCompare)
+
+// TODO: make entries editable from chart view
 
 // Max Chart functions
 
@@ -119,6 +125,22 @@ function drawMaxesChart(values) {
     }
 
     const chart = new GoogleCharts.api.visualization.LineChart(document.getElementById('maxes-chart'))
+
+    function selectHandler() {
+        const selectedItem = chart.getSelection()[0]
+        if (selectedItem) {
+            const date = data.getValue(selectedItem.row, 0)
+            store.maxesLocation = store.maxes.findIndex(max => {
+                const maxMoment = moment.utc(max.date).format("MMM Do YY")
+                const selectedMoment = moment.utc(date).format("MMM Do YY")
+                return maxMoment === selectedMoment
+            })
+            store.editMaxId = store.maxes[store.maxesLocation].id
+            maxUI.showEditMax()
+        }
+    }
+
+    GoogleCharts.api.visualization.events.addListener(chart, 'select', selectHandler)
 
     chart.draw(data, options)
 
@@ -235,6 +257,22 @@ function drawBWsChart(values) {
     }
 
     const chart = new GoogleCharts.api.visualization.LineChart(document.getElementById('bodyweights-chart'))
+
+    function selectHandler() {
+        const selectedItem = chart.getSelection()[0]
+        if (selectedItem) {
+            const date = data.getValue(selectedItem.row, 0)
+            store.bodyweightsLocation = store.bodyweights.findIndex(bodyweight => {
+                const bodyweightMoment = moment.utc(bodyweight.date).format("MMM Do YY")
+                const selectedMoment = moment.utc(date).format("MMM Do YY")
+                return bodyweightMoment === selectedMoment
+            })
+            store.editBWId = store.bodyweights[store.bodyweightsLocation].id
+            bodyweightUI.showEditBW()
+        }
+    }
+
+    GoogleCharts.api.visualization.events.addListener(chart, 'select', selectHandler)
 
     chart.draw(data, options)
 

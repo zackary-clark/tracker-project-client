@@ -4,8 +4,6 @@ const common = require('../commonUI.js')
 const store = require('../store')
 const showBWsTemplate = require('../templates/bodyweight-table.handlebars')
 
-// TODO: make entries editable from chart view
-
 const showNewBW = function () {
     $('#new-bodyweight-modal').modal('show')
     $('#new-bodyweight-date').attr('value', parseDateForDefault(new Date()))
@@ -59,7 +57,7 @@ const showEditBW = function () {
 }
 
 const redrawBWTableAfterEdit = function () {
-    showBWsSuccess(store)
+    ($('.bodyweight-table-container').css("display") === "block") ? showBWsSuccess(store) : ''
     $('#edit-bodyweight-modal').modal('hide')
     common.resetForms()
 }

@@ -4,8 +4,6 @@ const common = require('../commonUI.js')
 const store = require('../store')
 const showMaxesTemplate = require('../templates/max-table.handlebars')
 
-// TODO: make entries editable from chart view
-
 const showNewMax = function () {
     $('#new-max-modal').modal('show')
     $('#new-max-date').attr('value', parseDateForDefault(new Date()))
@@ -61,7 +59,7 @@ const showEditMax = function () {
 }
 
 const redrawMaxTableAfterEdit = function () {
-    showMaxesSuccess(store)
+    ($('.table-container').css("display") === "block") ? showMaxesSuccess(store) : ''
     $('#edit-max-modal').modal('hide')
     common.resetForms()
 }
