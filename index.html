@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lift Tracker</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
+
+        <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
+        <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+            <span class="navbar-brand">Lift Tracker</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarList">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarList">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="show-maxes-dropdown">1RM</a>
+                        <div class="dropdown-menu dropdown-menu-left">
+                            <a class="dropdown-item" href="#" id="show-maxes-button">Table</a>
+                            <a class="dropdown-item" href="#" id="show-maxes-chart">Chart</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="show-bodyweights-dropdown">BW</a>
+                        <div class="dropdown-menu dropdown-menu-left">
+                            <a class="dropdown-item" href="#" id="show-bodyweights-button">Table</a>
+                            <a class="dropdown-item" href="#" id="show-bodyweights-chart">Chart</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="show-bodyweight-max-compare">Rate of Gainz</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="current-user" data-toggle="dropdown">Placeholder User</a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#" id="sign-out-button">Sign Out</a>
+                            <a class="dropdown-item" href="#" id="show-change-password" data-toggle="modal" data-target="#change-password-modal">Change Password</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="display-message">&nbsp;</div>
+        <div class="about-message">
+            <p>Welcome to my powerlifting focused workout tracker app!</p>
+
+            <p>Enter your One Rep Maxes in the "1RM" tab, and your bodyweight in the BW tab. Then see the charts for those categories to visually break down your progress.</p>
+
+            <p>When the app has enough data about you, you can check the "Rate of Gainz" tab to compare your changing bodyweight to changing strength to see how one affects the other.</p>
+        </div>
+        <div class="container-fluid sign-in-up-container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 float-md-left">
+                    <form id="sign-in-form">
+                        <div class="form-group">
+                            <label for="sign-in-email">Email address</label>
+                            <input required class="form-control" id="sign-in-email" name="credentials[email]" type="email" placeholder="Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="sign-in-pass">Password</label>
+                            <input required class="form-control" id="sign-in-pass" name="credentials[password]" type="password" placeholder="Enter Password" />
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Sign In" />
+                        <button type="button" class="btn btn-primary float-none" id="sign-up-button">Register</button>
+                    </form>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <form id="sign-up-form">
+                        <div class="form-group">
+                            <label for="sign-up-email">Email address</label>
+                            <input required class="form-control" id="sign-up-email" name="credentials[email]" type="email" placeholder="Enter Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="sign-up-password">Password</label>
+                            <input required class="form-control" id="sign-up-password" name="credentials[password]" type="password" placeholder="Enter Password" />
+                            <input required class="form-control" name="credentials[password_confirmation]" type="password" placeholder="Confirm Password" />
+                            <small id="confirm-password-help" class="form-text text-muted">Passwords must match!</small>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Register" />
+                    </form>
+                </div>
+                <div class ="col-12 col-lg-4 col-xl-6"></div>
+            </div>
+        </div>
+        <div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Change Password</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="change-password">
+                            <div class="form-group">
+                                <input required class="form-control" name="passwords[old]" type="password" placeholder="Old Password" />
+                                <input required class="form-control" name="passwords[new]" type="password" placeholder="New Password" />
+                            </div>
+                            <input type="submit" class="btn btn-primary " value="Submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="new-max-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Max</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="new-max-form">
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-max-date">Date</label>
+                                    <input required class="form-control" id="new-max-date" name="max[date]" type="date" />
+                                    <small id="new-max-date-help" class="form-text text-muted">Only one entry per date!</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-max-squat">Squat 1RM</label>
+                                    <input class="form-control" name="max[squat1RM]" id="new-max-squat" type="number" step="0.1" placeholder="Squat 1RM" min="0" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="new-max-bench">Bench 1RM</label>
+                                    <input class="form-control" name="max[bench1RM]" id="new-max-bench" type="number" step="0.1" placeholder="Bench 1RM" min="0" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-max-deadlift">Deadlift 1RM</label>
+                                    <input class="form-control" name="max[deadlift1RM]" id="new-max-deadlift" type="number" step="0.1" placeholder="Deadlift 1RM" min="0" />
+                                    <small class="form-text text-muted">Maxes must be numbers!</small>
+                                </div>
+                                <div class="form-group col">
+                                    <label for="new-max-press">OHP 1RM</label>
+                                    <input class="form-control" name="max[press1RM]" id="new-max-press" type="number" step="0.1" placeholder="OHP 1RM" min="0" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" id="new-max-submit" value="Submit" />
+                        </form>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="new-max-multiple-entry" value="">
+                            <label class="form-check-label" for="new-max-multiple-entry">Multiple Entries</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="edit-max-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Max</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-max-form">
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-max-date">Date</label>
+                                    <input required class="form-control" id="edit-max-date" name="max[date]" type="date" placeholder="Date" />
+                                    <small id="edit-max-date-help" class="form-text text-muted">Only one entry per date!</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-max-squat">Squat 1RM</label>
+                                    <input class="form-control" id="edit-max-squat" name="max[squat1RM]" type="number" step="0.1" placeholder="Squat 1RM" min="0" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="edit-max-bench">Bench 1RM</label>
+                                    <input class="form-control" id="edit-max-bench" name="max[bench1RM]" type="number" step="0.1" placeholder="Bench 1RM" min="0" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-max-deadlift">Deadlift 1RM</label>
+                                    <input class="form-control" id="edit-max-deadlift" name="max[deadlift1RM]" type="number" step="0.1" placeholder="Deadlift 1RM" min="0" />
+                                    <small class="form-text text-muted">Maxes must be numbers!</small>
+                                </div>
+                                <div class="form-group col">
+                                    <label for="edit-max-press">OHP 1RM</label>
+                                    <input class="form-control" id="edit-max-press" name="max[press1RM]" type="number" step="0.1" placeholder="OHP 1RM" min="0" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Update" />
+                            <input type="button" class="btn btn-danger" id="delete-max-button" value="Delete" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="new-bodyweight-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Body Weight</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="new-bodyweight-form">
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-bodyweight-date">Date</label>
+                                    <input required class="form-control" id="new-bodyweight-date" name="bodyweight[date]" type="date" />
+                                    <small id="new-bodyweight-date-help" class="form-text text-muted">Only one entry per date!</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-bodyweight-squat">Weight</label>
+                                    <input class="form-control" name="bodyweight[weight]" id="new-bodyweight-weight" type="number" step="0.1" placeholder="Weight" min="0" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="new-bodyweight-notes">Notes</label>
+                                    <input class="form-control" name="bodyweight[notes]" id="new-bodyweight-notes" type="text" placeholder="Notes" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" id="new-bodyweight-submit" value="Submit" />
+                        </form>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="new-bodyweight-multiple-entry" value="">
+                            <label class="form-check-label" for="new-bodyweight-multiple-entry">Multiple Entries</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="edit-bodyweight-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Body Weight</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-bodyweight-form">
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-bodyweight-date">Date</label>
+                                    <input required class="form-control" id="edit-bodyweight-date" name="bodyweight[date]" type="date" />
+                                    <small id="edit-bodyweight-date-help" class="form-text text-muted">Only one entry per date!</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-bodyweight-squat">Weight</label>
+                                    <input class="form-control" name="bodyweight[weight]" id="edit-bodyweight-weight" type="number" step="0.1" placeholder="Weight" min="0" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="edit-bodyweight-notes">Notes</label>
+                                    <input class="form-control" name="bodyweight[notes]" id="edit-bodyweight-notes" type="text" placeholder="Notes" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" id="edit-bodyweight-submit" value="Submit" />
+                            <input type="button" class="btn btn-danger" id="delete-bodyweight-button" value="Delete" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-container container-fluid">
+            <button class="btn btn-primary" id="new-max">New Max</button>
+            <div>&nbsp;</div>
+            <div class="dropdown max-dropdown">
+                <button class="btn btn-secondary dropdown-toggle interval-dropdown-button" type="button" data-toggle="dropdown"></button>
+                <div class="dropdown-menu interval-dropdown"></div>
+            </div>
+            <div>&nbsp;</div>
+            <div class="table-container container-fluid">
+                <table class="display-maxes table table-bordered table-light table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Squat</th>
+                            <th scope="col">Bench</th>
+                            <th scope="col">Deadlift</th>
+                            <th scope="col">OHP</th>
+                        </tr>
+                        <tbody class="maxes-table"></tbody>
+                    </thead>
+                </table>
+            </div>
+            <div class="container-fluid chart-container">
+                <div class="chart" id="maxes-chart"></div>
+            </div>
+        </div>
+        <div class="bodyweight-container container-fluid">
+            <button class="btn btn-primary" id="new-bodyweight">New BW</button>
+            <div>&nbsp;</div>
+            <div class="dropdown bodyweight-dropdown">
+                <button class="btn btn-secondary dropdown-toggle interval-dropdown-button" type="button" data-toggle="dropdown"></button>
+                <div class="dropdown-menu interval-dropdown"></div>
+            </div>
+            <div>&nbsp;</div>
+            <div class="bodyweight-table-container container-fluid">
+                <table class="display-bodyweights table table-bordered table-light table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Weight</th>
+                            <th scope="col">Notes</th>
+                        </tr>
+                        <tbody class="bodyweights-table"></tbody>
+                    </thead>
+                </table>
+            </div>
+            <div class="container-fluid bodyweight-chart-container">
+                <div class="chart" id="bodyweights-chart"></div>
+            </div>
+        </div>
+    </body>
+</html>
